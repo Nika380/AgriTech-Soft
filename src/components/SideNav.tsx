@@ -44,10 +44,28 @@ const SideNav = ({ children }: any) => {
       ),
     },
     {
-      label: "ბაზები",
-      key: "databases",
+      label: "კულტურები",
+      key: "culture",
       icon: (
-        <Link href={"/databases"}>
+        <Link href={"/culture"}>
+          <DatabaseOutlined />
+        </Link>
+      ),
+    },
+    {
+      label: "ანალიზი",
+      key: "analyse",
+      icon: (
+        <Link href={"/analyse"}>
+          <DatabaseOutlined />
+        </Link>
+      ),
+    },
+    {
+      label: "რეკომენდაციები",
+      key: "recomendation",
+      icon: (
+        <Link href={"/recomendation"}>
           <DatabaseOutlined />
         </Link>
       ),
@@ -94,7 +112,7 @@ const SideNav = ({ children }: any) => {
             overflowY: "scroll",
             position: "fixed",
             top: "70px",
-            left: collapsed ? "80px" : "200px",
+            left: collapsed ? "70px" : "200px",
           }}
         >
           {children}

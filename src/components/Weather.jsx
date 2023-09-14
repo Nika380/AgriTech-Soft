@@ -13,7 +13,6 @@ const Weather = () => {
   if (error) {
     return <h1>error</h1>;
   }
-  console.log(data);
   return (
     <div className="flex justify-between  max-w-[980px] mr-0  w-full  text-white">
       {data.slice(0, 5).map((info, i) => (

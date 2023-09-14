@@ -1,13 +1,11 @@
+/* eslint-disable react/prop-types */
 "use client";
 import React from "react";
 
 const WeatherItem = ({ props }) => {
   const info = props;
   return (
-    <div
-      key={info?.datetime}
-      className="container flex flex-row items-center justify-between max-w-[170px] "
-    >
+    <div className="container flex flex-row items-center justify-between max-w-[170px] ">
       <img
         alt="weather"
         src={`https://cdn.weatherbit.io/static/img/icons/${info?.weather?.icon}.png?fbclid=IwAR281YBkTLi2bfW0VixkCBotCbaPridE--I-K0wE8g6QhYDYlNcCd3TIYyg`}
