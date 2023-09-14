@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// .ant-menu-light {
+//     all: unset;
+//   }
+//   .ant-layout-sider-dark {
+//     all: unset;
+//   }
+// .layout-sider {
+//     min-height: 100vh;
+//     position: fixed !important;
+//     top: 0;
+//     left: 0;
+//     padding-top: 70px;
+//     padding-left: 0;
+//     background-color: #292b48 !important;
+//     z-index: 1000;
+//     //   overflow: hidden;
+//     .ant-menu {
+//       display: flex;
+//       flex-direction: column;
+//       gap: 15px;
+//     }
+//     .ant-menu-item {
+//       width: 100%;
+//       height: 60px;
+//       display: flex;
+//       padding-left: 0px !important;
+//       justify-content: center;
+//       align-items: center;
+//       padding: 0 !important;
+//       margin: 0;
+//       border-radius: 0px;
+//       overflow: visible;
+//       transition: 350ms ease-in-out;
+//       .ant-menu-item-icon {
+//         font-size: 200% !important;
+//         color: #fff2f2d1 !important;
+//         opacity: 0.3;
+//       }
+//       a {
+//         width: 100%;
+//         height: 100%;
+//         display: flex !important;
+//         justify-content: center !important;
+//         align-items: center !important;
+//         span {
+//           font-size: 100% !important;
+//           &:nth-child(1) {
+//             font-size: 80% !important;
+//           }
+//         }
+//       }
+//       .ant-menu-title-content {
+//         position: absolute !important;
+//         left: 55px !important;
+//         display: flex;
+//         background-color: #203275 !important;
+//         color: #e7e5e5 !important;
+//         width: 0%;
+//         height: 60px;
+//         justify-content: center !important;
+//         align-items: center !important;
+//         transition: 150ms ease-in-out;
+//         overflow: hidden;
+//       }
+//       &:hover {
+//         background: #203275 !important;
+//         z-index: 20000 !important;
+//       }
+//       &:hover > .ant-menu-title-content {
+//         transition: 150ms ease-in-out !important;
+//         display: flex !important;
+//         width: 150% !important;
+//       }
+//       &:hover > .ant-menu-item-icon {
+//         opacity: 1;
+//       }
+//       .active {
+//         background-color: #203275 !important;
+//       }
+//     }
+//     .ant-menu-item-selected {
+//       background-color: #203275 !important;
+//       .ant-menu-item-icon {
+//         opacity: 1;
+//       }
+//     }
+//   }
+
+//   .layout-header {
+//     width: calc(100vw - 70px);
+//     height: 60px;
+//     background-color: #292b48;
+//     position: fixed;
+//     top: 0;
+//     left: 70px;
+//     z-index: 1000;
+//     display: flex;
+//     // .logo {
+//     //   position: relative;
+//     //   left: 0;
+//     //   background-image: url("../../assets/icons/logo-big-removebg-preview.png");
+//     //   background-size: cover;
+//     //   background-repeat: no-repeat;
+//     //   width: 60px;
+//     //   height: 60px;
+//     //   cursor: pointer;
+//     // }
+//     .text {
+//       font-size: 28px;
+//       font-family: "Poppins";
+//       color: white;
+//       position: relative;
+//       cursor: pointer;
+//     }
+//   }
+//   .layout-content {
+//     width: 100wv;
+//     // margin-left: 70px;
+//     min-height: 100vh;
+//     padding: 10px;
+//     overflow: hidden;
+//     &::-webkit-scrollbar {
+//       display: none;
+//     }
+//     background: #1b1f38;
+//   }
+
+//   .layout {
+//     display: flex;
+//     flex-direction: row;
+//     // padding-left: 70px;
+//     width: 100vw;
+//     height: 100vh;
+//     overflow: hidden;
+//   }
