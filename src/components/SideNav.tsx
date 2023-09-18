@@ -1,15 +1,15 @@
 "use client";
-import {
-  DatabaseOutlined,
-  LineChartOutlined,
-  MenuOutlined,
-} from "@ant-design/icons";
 import { Breadcrumb, ConfigProvider, Layout, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { RiCloseLine } from "react-icons/ri";
+import { HiOutlineMenu, HiHome } from "react-icons/hi";
+import { PiPlantBold } from "react-icons/pi";
+import { BiSolidAnalyse } from "react-icons/bi";
+import { MdOutlineRecommend } from "react-icons/md";
 // import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 // import EqualizerIcon from "@mui/icons-material/Equalizer";
 // import HandshakeIcon from "@mui/icons-material/Handshake";
@@ -31,6 +31,7 @@ import {
 import Weather from "./Weather";
 
 const SideNav = ({ children }: any) => {
+  const [mobileMenuOpen, setmobileMenuOpen] = useState(false);
   const pathname = usePathname().split("/")[1];
   const router = useRouter();
   const menuItems = [
@@ -39,34 +40,60 @@ const SideNav = ({ children }: any) => {
       key: "home",
       icon: (
         <Link href={"/home"}>
-          <MenuOutlined />
+          <HiHome />
         </Link>
       ),
     },
     {
-      label: "ბაზები",
-      key: "databases",
+      label: "კულტურები",
+      key: "culture",
       icon: (
-        <Link href={"/databases"}>
-          <DatabaseOutlined />
+        <Link href={"/culture"}>
+          <PiPlantBold />
+        </Link>
+      ),
+    },
+    {
+      label: "ანალიზი",
+      key: "analyse",
+      icon: (
+        <Link href={"/analyse"}>
+          <BiSolidAnalyse />
+        </Link>
+      ),
+    },
+    {
+      label: "რეკომენდაციები",
+      key: "recomendation",
+      icon: (
+        <Link href={"/recomendation"}>
+          <MdOutlineRecommend />
         </Link>
       ),
     },
   ];
-
-  const [collapsed, setCollapsed] = useState(false);
   return (
-    <Layout style={{ height: "100vh", position: "fixed", top: "0", left: "0" }}>
+    <Layout
+      style={{
+        height: "100vh",
+        position: "fixed",
+        top: "0",
+        left: "0",
+        background: "white",
+      }}
+    >
       <Sider
         collapsible
-        collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
+        collapsed={mobileMenuOpen}
+        onCollapse={(value) => setmobileMenuOpen(value)}
         style={{ paddingTop: "80px", minHeight: "100vh" }}
+        // className={`${mobileMenuOpen ? "left-0" : "-left-full"}`}
       >
         <div className="demo-logo-vertical" />
         <Menu
           theme="dark"
-          defaultSelectedKeys={[""]}
+          defaultSelectedKeys={[pathname]}
+          selectedKeys={[pathname]}
           mode="inline"
           items={menuItems}
         />
@@ -81,9 +108,24 @@ const SideNav = ({ children }: any) => {
             height: "70px",
           }}
         >
-          <div className="container mx-auto flex justify-between items-center">
-            <h1 className="text-white">Logo Name</h1>
+          <div className="container flex justify-between items-center2 ">
+            <div className="top-6  md:mr-24 mr-0">
+              <h1 className="h-12 text-white">Logo Name</h1>
+            </div>
             <Weather />
+            <div className="absolute md:hidden block top-6 right-3 ">
+              {mobileMenuOpen ? (
+                <RiCloseLine
+                  className="w-6 h-6 ml-2 text-white cursor-pointer z-90"
+                  onClick={() => setmobileMenuOpen(false)}
+                />
+              ) : (
+                <HiOutlineMenu
+                  className="w-6 h-6 ml-2 text-white cursor-pointer z-90"
+                  onClick={() => setmobileMenuOpen(true)}
+                />
+              )}
+            </div>
           </div>
         </Header>
         <Content
@@ -94,7 +136,7 @@ const SideNav = ({ children }: any) => {
             overflowY: "scroll",
             position: "fixed",
             top: "70px",
-            left: collapsed ? "80px" : "200px",
+            left: mobileMenuOpen ? "70px" : "200px",
           }}
         >
           {children}
