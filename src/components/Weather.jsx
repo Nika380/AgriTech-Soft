@@ -1,23 +1,60 @@
-"use client";
-import React from "react";
+/* eslint-disable import/no-unresolved */
+import React, { useState, useEffect } from "react";
 import useFetchWeather from "../hooks/useFetchWeather";
 import WeatherItem from "./WeatherItem";
+import { Swiper, SwiperSlide } from "swiper/react";
 
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/autoplay";
+
+import { Navigation, Autoplay } from "swiper/modules";
 const Weather = () => {
   const [data, isLoading, error] = useFetchWeather();
+  const [SwiperItem, setSwiperItem] = useState(1);
+  const swiperParams = {
+    slidesPerView: SwiperItem,
+    spaceBetween: 30,
+    autoplay: {
+      delay: 3000,
+      disableOnInteraction: false,
+    },
+    modules: [Navigation, Autoplay],
+  };
 
+  useEffect(() => {
+    const updateSwiperItem = () => {
+      if (window.innerWidth > 1024) {
+        setSwiperItem(5);
+      } else if (window.innerWidth > 600) {
+        setSwiperItem(3);
+      } else if (window.innerWidth > 480) {
+        setSwiperItem(1);
+      }
+    };
+    updateSwiperItem();
+    window.addEventListener("resize", updateSwiperItem);
+    return () => {
+      window.removeEventListener("resize", updateSwiperItem);
+    };
+  }, []);
   if (isLoading) {
-    return <h1>isLoading</h1>;
+    return <h1>Loading...</h1>;
   }
 
   if (error) {
-    return <h1>error</h1>;
+    return <h1>Error: {error.message}</h1>;
   }
+
   return (
-    <div className="flex justify-between  max-w-[980px] mr-0  w-full  text-white">
-      {data.slice(0, 5).map((info, i) => (
-        <WeatherItem props={info} key={i} />
-      ))}
+    <div className="flex justify-between lg:max-w-[980px] md:max-w-[400px] max-w-[300px] mr-0 w-full text-white">
+      <Swiper {...swiperParams}>
+        {data.map((info, i) => (
+          <SwiperSlide key={i}>
+            <WeatherItem props={info} />
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 };

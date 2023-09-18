@@ -19,7 +19,7 @@ export const inputs = [
     // errorMessage: "მიუთითეთ კვადრატული მეტრი",
     //pattern: "^(0|[0-9]d*)$",
     required: true,
-    min: 0,
+    min: 1,
   },
   {
     id: 3,
