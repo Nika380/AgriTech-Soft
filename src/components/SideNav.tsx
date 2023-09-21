@@ -98,7 +98,7 @@ const SideNav = ({ children }: any) => {
           items={menuItems}
         />
       </Sider>
-      <Layout>
+      <Layout style={{ overflow: "scroll" }}>
         <Header
           style={{
             width: "100%",
@@ -109,8 +109,8 @@ const SideNav = ({ children }: any) => {
             zIndex: "100",
           }}
         >
-          <div className="container flex justify-between items-center2 ">
-            <div className="top-6  md:mr-24 mr-0 border-2 border-blue-600">
+          <div className="flex justify-between items-center">
+            <div className="top-6">
               <h1 className="h-12 text-white">Logo Name</h1>
             </div>
             <Weather />
@@ -133,7 +133,6 @@ const SideNav = ({ children }: any) => {
           style={{
             minHeight: "100vh",
             width: "100vw",
-            padding: "10px",
             overflowY: "scroll",
             position: "fixed",
             top: "70px",

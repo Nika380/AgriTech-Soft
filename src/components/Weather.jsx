@@ -25,10 +25,12 @@ const Weather = () => {
   useEffect(() => {
     const updateSwiperItem = () => {
       if (window.innerWidth > 1024) {
-        setSwiperItem(5);
-      } else if (window.innerWidth > 600) {
+        setSwiperItem(4);
+      } else if (window.innerWidth > 800) {
         setSwiperItem(3);
-      } else if (window.innerWidth > 480) {
+      } else if (window.innerWidth > 680) {
+        setSwiperItem(2);
+      } else if (window.innerWidth > 550) {
         setSwiperItem(1);
       }
     };
@@ -47,7 +49,7 @@ const Weather = () => {
   }
 
   return (
-    <div className="flex justify-between lg:max-w-[980px] md:max-w-[400px] max-w-[300px] mr-0 w-full text-white">
+    <div className="flex justify-between lg:max-w-[980px] md:max-w-[600px] sm:max-w-[500px] max-w-[250px]  mr-0 w-full text-white">
       <Swiper {...swiperParams}>
         {data.map((info, i) => (
           <SwiperSlide key={i}>
