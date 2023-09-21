@@ -8,12 +8,12 @@ export async function POST(req: Request, res: any) {
       data: {
         culture_name: values.cultureName,
         culture_location: values.location,
-        square_meter: values.squareMeter,
+        square_meter: parseInt(values.squareMeter),
       },
     });
     return NextResponse.json("culture added successfully", { status: 201 });
   } catch (error: any) {
-    console.log(error)
+    console.log(error);
     return NextResponse.json(error, { status: 400 });
   }
 }

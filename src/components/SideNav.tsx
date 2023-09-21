@@ -83,11 +83,11 @@ const SideNav = ({ children }: any) => {
       }}
     >
       <Sider
-        collapsible
-        collapsed={mobileMenuOpen}
-        onCollapse={(value) => setmobileMenuOpen(value)}
-        style={{ paddingTop: "80px", minHeight: "100vh" }}
-        // className={`${mobileMenuOpen ? "left-0" : "-left-full"}`}
+        style={{
+          paddingTop: "80px",
+          minHeight: "100vh",
+        }}
+        className={`md:inline-block ${mobileMenuOpen ? "" : "hidden"}`}
       >
         <div className="demo-logo-vertical" />
         <Menu
@@ -98,7 +98,7 @@ const SideNav = ({ children }: any) => {
           items={menuItems}
         />
       </Sider>
-      <Layout>
+      <Layout style={{ overflow: "scroll" }}>
         <Header
           style={{
             width: "100%",
@@ -106,10 +106,11 @@ const SideNav = ({ children }: any) => {
             top: "0",
             left: "0",
             height: "70px",
+            zIndex: "100",
           }}
         >
-          <div className="container flex justify-between items-center2 ">
-            <div className="top-6  md:mr-24 mr-0">
+          <div className="flex justify-between items-center">
+            <div className="top-6">
               <h1 className="h-12 text-white">Logo Name</h1>
             </div>
             <Weather />
@@ -132,11 +133,9 @@ const SideNav = ({ children }: any) => {
           style={{
             minHeight: "100vh",
             width: "100vw",
-            padding: "10px",
             overflowY: "scroll",
             position: "fixed",
             top: "70px",
-            left: mobileMenuOpen ? "70px" : "200px",
           }}
         >
           {children}

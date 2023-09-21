@@ -7,10 +7,10 @@ const AddCultureModal = () => {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <div className="flex justify-end sm:justify-end items-center sm:flex-row flex-col mt-auto ">
+      <div className="flex justify-end sm:justify-end items-center sm:flex-row flex-col mt-auto py-10">
         <Button
           onClick={() => setOpen(!open)}
-          className="text-white bg-[#2d3d51] sm:mt-0 mt-5 sm:mr-20 "
+          className="text-white bg-[#2d3d51] sm:mt-0 mt-5 sm:mr-10"
         >
           კულტურის დამატება
         </Button>
