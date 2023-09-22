@@ -8,10 +8,12 @@ datasource db {
 }
 
 model cultures {
-  id               Int    @id(map: "cultures_pk") @default(autoincrement())
+  id               Int      @id(map: "cultures_pk") @default(autoincrement())
   culture_name     String
   culture_location String
   square_meter     Int
+  created_at       DateTime @default(now()) @db.Timestamp(6)
+  updated_at       DateTime @default(now()) @updatedAt @db.Timestamp(6) 
 }
 
 model users {
@@ -22,5 +24,5 @@ model users {
   email      String
   password   String
   created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @updatedAt @db.Timestamp(6)
 }
