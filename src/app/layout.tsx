@@ -1,17 +1,15 @@
 "use client";
 import React from "react";
-// import "../assets/styles/global.scss";
 import Index from "./page";
-// import { Provider } from "react-redux";
-// import { store } from "@/redux/store";
+import ContextProvider from "../context/global/GlobalContextProvider";
 
 const RootLayout = ({ children }: any) => {
   return (
     <html>
       <body>
-        {/* <Provider store={store}> */}
+        <ContextProvider>
           <Index children={children} />
-        {/* </Provider> */}
+        </ContextProvider>
       </body>
     </html>
   );

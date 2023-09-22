@@ -1,16 +1,42 @@
-/* eslint-disable react/jsx-no-duplicate-props */
 /* eslint-disable react/prop-types */
-import React from "react";
+import React, { useState } from "react";
 import {
   EditOutlined,
   DeleteOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
 import { Card } from "antd";
+import { API } from "../utils/API";
+import { useGlobalContext } from "../context/global/GlobalContextProvider";
+import {
+  apiCallRefresh,
+  currentCultureValue,
+  openModal,
+} from "../context/actions/actionCreators";
 const { Meta } = Card;
 
 const CultureCardItem = ({ props }) => {
-  console.log(props);
+  const { state, dispatch } = useGlobalContext();
+  const [isLoading, setisLoading] = useState(false);
+  const editCultureCard = async (values) => {
+    dispatch(openModal(!state.openModal));
+    dispatch(currentCultureValue(values));
+    // setisLoading(true);
+    // await API.put(`cultures/update-info/${id}`, { values })
+    //   .then((res) => console.log(res))
+    //   .catch((err) => console.log(err))
+    //   .finally(() => setisLoading(false));
+  };
+  console.log(state);
+  const delateCultureCard = async (id) => {
+    setisLoading(true);
+    await API.delete(`/cultures/delete-culture/${id}`)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err))
+      .finally(() => setisLoading(false));
+    dispatch(apiCallRefresh(!state.apiCallRefresh));
+  };
+
   return (
     <Card
       style={{
@@ -18,9 +44,21 @@ const CultureCardItem = ({ props }) => {
         marginBottom: "70px",
       }}
       actions={[
-        <SettingOutlined key="setting" className="hover:text-green-400" />,
-        <EditOutlined key="edit" className="hover:text-yellow-400" />,
-        <DeleteOutlined key="delete" className="hover:text-red-400" />,
+        <SettingOutlined key="setting" className="hover:bg-green-400" />,
+        <EditOutlined
+          key="edit"
+          onClick={() => editCultureCard(props)}
+          className="hover:bg-yellow-400"
+        />,
+        isLoading ? (
+          <div className="delete-loader"></div>
+        ) : (
+          <DeleteOutlined
+            key="delete"
+            onClick={() => delateCultureCard(props.id)}
+            className="hover:bg-red-400"
+          />
+        ),
       ]}
     >
       <Meta title={props?.cultureName} description={props?.location} />

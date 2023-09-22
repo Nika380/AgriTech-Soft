@@ -3,7 +3,12 @@ import React, { useState, useEffect } from "react";
 import { inputs } from "../constants/constants";
 import { Button, Space } from "antd";
 import { API } from "../utils/API";
-// import axios from "axios";
+import { useGlobalContext } from "../context/global/GlobalContextProvider";
+import {
+  openModal,
+  apiCallRefresh,
+  currentCultureValue,
+} from "../context/actions/actionCreators";
 
 const Form = ({
   label,
@@ -49,15 +54,18 @@ const Form = ({
   );
 };
 
-const AddCultureForm = ({ handleCancel, handleOk }) => {
-  const [values, setValues] = useState({
-    cultureName: "",
-    squareMeter: "",
-    location: "",
-  });
+const AddCultureForm = () => {
+  const { state, dispatch } = useGlobalContext();
   const [activeButton, setactiveButton] = useState(true);
+  const [isLoading, setisLoading] = useState(false);
+  const [values, setValues] = useState({
+    cultureName: state.currentCultureValue?.cultureName,
+    squareMeter: state.currentCultureValue?.squareMeter,
+    location: state.currentCultureValue?.squareMeter,
+  });
+  console.log(values);
   const areValuesNotEmpty = Object.values(values).every(
-    (value) => value.length > 0
+    (value) => value?.length > 0
   );
   useEffect(() => {
     if (areValuesNotEmpty) {
@@ -69,11 +77,24 @@ const AddCultureForm = ({ handleCancel, handleOk }) => {
 
   const addCultureHandler = async (e) => {
     e.preventDefault();
+    setisLoading(true);
+    setactiveButton(true);
+    if (state.currentCultureValue?.cultureName) {
+      const values = state.currentCultureValue;
+      await API.put(`cultures/update-info/${state.currentCultureValue.id}`, {
+        values,
+      })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+      dispatch(currentCultureValue(null));
+    }
     await API.post("/cultures/add-culture", { values })
       .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => setisLoading(false));
     setValues({ cultureName: "", squareMeter: "", location: "" });
-    handleOk();
+    dispatch(apiCallRefresh(!state.apiCallRefresh));
+    dispatch(openModal(!state.openModal));
   };
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -92,7 +113,10 @@ const AddCultureForm = ({ handleCancel, handleOk }) => {
             />
           ))}
           <Space wrap className="flex flex-row justify-between">
-            <Button danger onClick={handleCancel}>
+            <Button
+              danger
+              onClick={() => dispatch(openModal(!state.openModal))}
+            >
               გამოსვლა
             </Button>
             <Button
@@ -101,7 +125,7 @@ const AddCultureForm = ({ handleCancel, handleOk }) => {
               onClick={addCultureHandler}
               disabled={activeButton}
             >
-              დამატება
+              {isLoading ? <div className="custom-loader"></div> : "დამატება"}
             </Button>
           </Space>
         </form>
