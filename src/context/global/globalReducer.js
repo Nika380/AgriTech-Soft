@@ -2,6 +2,8 @@ import {
   APICALLREFRESH,
   OPENMODAL,
   CURRENTCULTUREVALUE,
+  ACRTIVEFORMBTN,
+  EDITISON,
 } from "../actions/actions";
 
 const globalReducer = (state, actions) => {
@@ -14,7 +16,13 @@ const globalReducer = (state, actions) => {
       return { ...state, openModal: payload };
     }
     case CURRENTCULTUREVALUE: {
-      return { ...state, currentCultureValue: payload };
+      return { ...state, values: payload };
+    }
+    case ACRTIVEFORMBTN: {
+      return { ...state, activeFormButton: payload };
+    }
+    case EDITISON: {
+      return { ...state, editCulture: payload };
     }
 
     default:
@@ -25,7 +33,13 @@ const globalReducer = (state, actions) => {
 const initialState = {
   apiCallRefresh: false,
   openModal: false,
-  currentCultureValue: {},
+  activeFormButton: true,
+  editCulture: false,
+  values: {
+    cultureName: "",
+    squareMeter: "",
+    location: "",
+  },
 };
 
 export { globalReducer, initialState };

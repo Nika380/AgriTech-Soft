@@ -1,4 +1,10 @@
-import { APICALLREFRESH, OPENMODAL, CURRENTCULTUREVALUE } from "./actions";
+import {
+  APICALLREFRESH,
+  OPENMODAL,
+  CURRENTCULTUREVALUE,
+  ACRTIVEFORMBTN,
+  EDITISON,
+} from "./actions";
 
 const apiCallRefresh = (payload) => {
   return {
@@ -21,4 +27,24 @@ const currentCultureValue = (payload) => {
   };
 };
 
-export { apiCallRefresh, openModal, currentCultureValue };
+const activeButton = (payload) => {
+  return {
+    type: ACRTIVEFORMBTN,
+    payload,
+  };
+};
+
+const handleEdit = (payload) => {
+  return {
+    type: EDITISON,
+    payload,
+  };
+};
+
+export {
+  apiCallRefresh,
+  openModal,
+  currentCultureValue,
+  activeButton,
+  handleEdit,
+};
