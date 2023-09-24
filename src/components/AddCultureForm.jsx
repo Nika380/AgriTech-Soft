@@ -3,15 +3,18 @@ import React, { useState, useEffect } from "react";
 import { inputs } from "../constants/constants";
 import { Button, Space } from "antd";
 import { API } from "../utils/API";
-// import axios from "axios";
+import { useGlobalContext } from "../context/global/GlobalContextProvider";
+import {
+  openModal,
+  apiCallRefresh,
+  currentCultureValue,
+  activeButton,
+  handleEdit,
+} from "../context/actions/actionCreators";
 
-const Form = ({
-  label,
-  onChange,
-  errorMessage,
-  setactiveButton,
-  ...inputProps
-}) => {
+const Form = ({ label, onChange, errorMessage, ...inputProps }) => {
+  const { dispatch } = useGlobalContext();
+
   const [focused, setfocused] = useState(false);
   const handleFocuse = () => {
     if (
@@ -21,7 +24,7 @@ const Form = ({
       setfocused(false);
     } else {
       setfocused(true);
-      setactiveButton(true);
+      dispatch(activeButton(true));
     }
   };
   return (
@@ -49,34 +52,65 @@ const Form = ({
   );
 };
 
-const AddCultureForm = ({ handleCancel, handleOk }) => {
-  const [values, setValues] = useState({
-    cultureName: "",
-    squareMeter: "",
-    location: "",
-  });
-  const [activeButton, setactiveButton] = useState(true);
-  const areValuesNotEmpty = Object.values(values).every(
-    (value) => value.length > 0
-  );
+const AddCultureForm = () => {
+  const { state, dispatch } = useGlobalContext();
+  const values = state.values;
+  const test = [
+    state.values.cultureName,
+    state.values.squareMeter,
+    state.values.location,
+  ];
+  const [isLoading, setisLoading] = useState(false);
+  const [ValueCheck, setValueCheck] = useState(false);
   useEffect(() => {
-    if (areValuesNotEmpty) {
-      setactiveButton(false);
+    test.forEach((item) => {
+      if (item.length > 0) {
+        setValueCheck(true);
+      } else {
+        setValueCheck(false);
+      }
+    });
+    if (ValueCheck) {
+      dispatch(activeButton(false));
     } else {
-      setactiveButton(true);
+      dispatch(activeButton(true));
     }
-  }, [areValuesNotEmpty]);
+  }, [values, ValueCheck]);
 
   const addCultureHandler = async (e) => {
     e.preventDefault();
-    await API.post("/cultures/add-culture", { values })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-    setValues({ cultureName: "", squareMeter: "", location: "" });
-    handleOk();
+    setisLoading(true);
+    dispatch(activeButton(true));
+    if (state.editCulture) {
+      await API.put(`cultures/update-info/${values.id}`, {
+        values,
+      })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err))
+        .finally(() => {
+          dispatch(handleEdit(false)), setisLoading(false);
+        });
+      dispatch(
+        currentCultureValue({ cultureName: "", squareMeter: "", location: "" })
+      );
+      dispatch(apiCallRefresh(!state.apiCallRefresh));
+      dispatch(openModal(!state.openModal));
+    } else {
+      await API.post("/cultures/add-culture", { values })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err))
+        .finally(() => setisLoading(false));
+      dispatch(
+        currentCultureValue({ cultureName: "", squareMeter: "", location: "" })
+      );
+      dispatch(apiCallRefresh(!state.apiCallRefresh));
+      dispatch(openModal(!state.openModal));
+    }
   };
   const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+    dispatch(
+      currentCultureValue({ ...values, [e.target.name]: e.target.value })
+    );
   };
   return (
     <div className="flex items-center justify-center mt-10">
@@ -88,20 +122,22 @@ const AddCultureForm = ({ handleCancel, handleOk }) => {
               {...input}
               value={values[input.name]}
               onChange={handleChange}
-              setactiveButton={setactiveButton}
             />
           ))}
           <Space wrap className="flex flex-row justify-between">
-            <Button danger onClick={handleCancel}>
+            <Button
+              danger
+              onClick={() => dispatch(openModal(!state.openModal))}
+            >
               გამოსვლა
             </Button>
             <Button
               type="primary"
               ghost
               onClick={addCultureHandler}
-              disabled={activeButton}
+              disabled={state.activeFormButton}
             >
-              დამატება
+              {isLoading ? <div className="custom-loader"></div> : "დამატება"}
             </Button>
           </Space>
         </form>

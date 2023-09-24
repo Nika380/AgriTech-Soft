@@ -12,7 +12,7 @@ export async function PUT(req: Request, res: any) {
       },
       data: {
         culture_location: values.location,
-        culture_name: values.name,
+        culture_name: values.cultureName,
         square_meter: parseInt(values.squareMeter),
       },
     });
