@@ -15,13 +15,13 @@ import {
   handleEdit,
   openModal,
 } from "../context/actions/actionCreators";
-import CultureDetails from "./CultureDetails";
+import { useRouter } from "next/navigation";
 const { Meta } = Card;
 
 const CultureCardItem = ({ props }) => {
   const { state, dispatch } = useGlobalContext();
   const [isLoading, setisLoading] = useState(false);
-  const [showDetails, setshowDetails] = useState(false);
+  const router = useRouter();
   const editCultureCard = async (values) => {
     dispatch(openModal(!state.openModal));
     dispatch(activeButton(false));
@@ -47,7 +47,7 @@ const CultureCardItem = ({ props }) => {
         actions={[
           <SettingOutlined
             key="setting"
-            onClick={() => setshowDetails(true)}
+            onClick={() => router.push(`/culture/${props.id}`)}
             className="hover:bg-green-400"
           />,
           <EditOutlined
@@ -69,12 +69,6 @@ const CultureCardItem = ({ props }) => {
         <Meta title={props?.cultureName} description={props?.location} />
         <Meta description={`${props.squareMeter} კვ/მ.`} />
       </Card>
-      {showDetails && (
-        <div className="absolute top-0 bottom-0 left-0 right-0 bg-white pl-28 z-10">
-          <button onClick={() => setshowDetails(false)}>back</button>
-          <CultureDetails />
-        </div>
-      )}
     </>
   );
 };

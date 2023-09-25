@@ -1,20 +1,22 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from "react";
-import { inputs } from "../constants/constants";
-import { Button, Space } from "antd";
-import { API } from "../utils/API";
-import { useGlobalContext } from "../context/global/GlobalContextProvider";
+import React, { useEffect, useState } from "react";
+import { useGlobalContext } from "../../../../context/global/GlobalContextProvider";
+import { API } from "../../../../utils/API";
 import {
-  openModal,
   apiCallRefresh,
-  currentCultureValue,
-  activeButton,
   handleEdit,
-} from "../context/actions/actionCreators";
+  newAction,
+} from "../../../../context/actions/actionCreators";
+import { addCultureAction } from "../../../../constants/constants";
+import { Button, Space } from "antd";
 
-const Form = ({ label, onChange, errorMessage, ...inputProps }) => {
-  const { dispatch } = useGlobalContext();
-
+const Form = ({
+  label,
+  onChange,
+  errorMessage,
+  setactiveButton,
+  ...inputProps
+}) => {
   const [focused, setfocused] = useState(false);
   const handleFocuse = () => {
     if (
@@ -24,7 +26,7 @@ const Form = ({ label, onChange, errorMessage, ...inputProps }) => {
       setfocused(false);
     } else {
       setfocused(true);
-      dispatch(activeButton(true));
+      setactiveButton(true);
     }
   };
   return (
@@ -52,16 +54,17 @@ const Form = ({ label, onChange, errorMessage, ...inputProps }) => {
   );
 };
 
-const AddCultureForm = () => {
+const AddForm = ({ setopenModal }) => {
   const { state, dispatch } = useGlobalContext();
-  const values = state.values;
+  const values = state.action;
   const test = [
-    state.values.cultureName,
-    state.values.squareMeter,
-    state.values.location,
+    state.action.name,
+    state.action.money,
+    state.action.mainBusiness,
   ];
   const [isLoading, setisLoading] = useState(false);
   const [ValueCheck, setValueCheck] = useState(false);
+  const [activeButton, setactiveButton] = useState(false);
   useEffect(() => {
     test.forEach((item) => {
       if (item.length > 0) {
@@ -69,73 +72,64 @@ const AddCultureForm = () => {
       } else {
         setValueCheck(false);
       }
+      if (ValueCheck) {
+        setactiveButton(false);
+      } else {
+        setactiveButton(true);
+      }
     });
-    if (ValueCheck) {
-      dispatch(activeButton(false));
-    } else {
-      dispatch(activeButton(true));
-    }
   }, [values, ValueCheck]);
 
-  const addCultureHandler = async (e) => {
+  const addActionHandler = async (e) => {
     e.preventDefault();
     setisLoading(true);
-    dispatch(activeButton(true));
+    setactiveButton(true);
     if (state.editCulture) {
-      await API.put(`cultures/update-info/${values.id}`, {
-        values,
-      })
+      await API.put(`//${values.id}`, { values })
         .then((res) => console.log(res))
         .catch((err) => console.log(err))
         .finally(() => {
           dispatch(handleEdit(false)), setisLoading(false);
         });
-      dispatch(
-        currentCultureValue({ cultureName: "", squareMeter: "", location: "" })
-      );
+      dispatch(newAction({ name: "", money: "", mainBusiness: "" }));
       dispatch(apiCallRefresh(!state.apiCallRefresh));
-      dispatch(openModal(!state.openModal));
+      setopenModal(false);
     } else {
-      await API.post("/cultures/add-culture", { values })
+      await API.post(`//`, { values })
         .then((res) => console.log(res))
         .catch((err) => console.log(err))
         .finally(() => setisLoading(false));
-      dispatch(
-        currentCultureValue({ cultureName: "", squareMeter: "", location: "" })
-      );
+      dispatch(newAction({ name: "", money: "", mainBusiness: "" }));
       dispatch(apiCallRefresh(!state.apiCallRefresh));
-      dispatch(openModal(!state.openModal));
+      setopenModal(false);
     }
   };
+
   const handleChange = (e) => {
-    dispatch(
-      currentCultureValue({ ...values, [e.target.name]: e.target.value })
-    );
+    dispatch(newAction({ ...values, [e.target.name]: e.target.value }));
   };
   return (
     <div className="flex items-center justify-center mt-10">
       <div className="p-8 rounded shadow-md max-w-md w-full">
         <form>
-          {inputs.map((input) => (
+          {addCultureAction.map((input) => (
             <Form
-              key={input.id}
+              key={input.key}
               {...input}
               value={values[input.name]}
               onChange={handleChange}
+              setactiveButton={() => setactiveButton()}
             />
           ))}
           <Space wrap className="flex flex-row justify-between">
-            <Button
-              danger
-              onClick={() => dispatch(openModal(!state.openModal))}
-            >
+            <Button danger onClick={() => setopenModal((prev) => !prev)}>
               გამოსვლა
             </Button>
             <Button
               type="primary"
               ghost
-              onClick={addCultureHandler}
-              disabled={state.activeFormButton}
+              onClick={addActionHandler}
+              disabled={activeButton}
             >
               {isLoading ? <div className="custom-loader" /> : "დამატება"}
             </Button>
@@ -145,4 +139,5 @@ const AddCultureForm = () => {
     </div>
   );
 };
-export default AddCultureForm;
+
+export default AddForm;
