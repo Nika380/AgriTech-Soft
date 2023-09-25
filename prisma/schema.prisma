@@ -8,12 +8,15 @@ datasource db {
 }
 
 model cultures {
-  id               Int      @id(map: "cultures_pk") @default(autoincrement())
+  id               Int               @id(map: "cultures_pk") @default(autoincrement())
   culture_name     String
   culture_location String
   square_meter     Int
-  created_at       DateTime @default(now()) @db.Timestamp(6)
-  updated_at       DateTime @default(now()) @updatedAt @db.Timestamp(6) 
+  created_at       DateTime          @default(now()) @db.Timestamp(6)
+  updated_at       DateTime          @default(now()) @updatedAt @db.Timestamp(6)
+  created_by       Int?
+  updated_by       Int?
+  culture_details  culture_details[]
 }
 
 model users {
@@ -25,4 +28,33 @@ model users {
   password   String
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @updatedAt @db.Timestamp(6)
+}
+
+model culture_details {
+  id              Int             @id(map: "culture_details_pk") @default(autoincrement())
+  task_name       String
+  task_type       Int
+  price           Float
+  status          Int
+  planned_at      DateTime        @db.Timestamp(6)
+  created_at      DateTime        @default(now()) @db.Timestamp(6)
+  updated_at      DateTime        @default(now()) @db.Timestamp(6)
+  created_by      Int?
+  updated_by      Int?
+  culture_id      Int?
+  cultures        cultures?       @relation(fields: [culture_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "culture_details_cultures_id_fk")
+  zlib_statuses   zlib_statuses   @relation(fields: [status], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "culture_details_zlib_statuses_id_fk")
+  zlib_task_types zlib_task_types @relation(fields: [task_type], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "culture_details_zlib_task_types_id_fk")
+}
+
+model zlib_statuses {
+  id              Int               @id(map: "zlib_statuses_pk") @default(autoincrement())
+  status_name     String
+  culture_details culture_details[]
+}
+
+model zlib_task_types {
+  id              Int               @id(map: "zlib_task_types_pk") @default(autoincrement())
+  type_name       String
+  culture_details culture_details[]
 }
