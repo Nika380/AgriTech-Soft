@@ -8,7 +8,11 @@ import React, { useContext, useEffect, useRef, useState, usePara } from "react";
 import { Button, Form, Input, Popconfirm, Table, Modal } from "antd";
 import { useParams } from "next/navigation";
 import AddForm from "./AddForm";
-import { FALSE } from "sass";
+import useFetchUpdateCulturesDetails from "../../../../hooks/useFetchUpdateCulturesDetails";
+import { API } from "../../.../../../../utils/API";
+import { useGlobalContext } from "../../../../context/global/GlobalContextProvider";
+import { apiCallRefresh } from "../../../../context/actions/actionCreators";
+// import { FALSE } from "sass";
 // const EditableContext = React.createContext(null);
 // const EditableRow = ({ index, ...props }) => {
 //   const [form] = Form.useForm();
@@ -87,40 +91,41 @@ import { FALSE } from "sass";
 //   return <td {...restProps}>{childNode}</td>;
 // };
 const App = () => {
+  const { state, dispatch } = useGlobalContext();
   const [openModal, setopenModal] = useState(false);
   const { id } = useParams();
-  console.log(id);
-  const [dataSource, setDataSource] = useState([
-    {
-      name: "დაგეგმე ახალი საქმე",
-      money: "მიუთითე თანხა",
-      mainBusiness: "რა არის მთავარი საქმე?",
-    },
-    {
-      name: "დაგეგმე ახალი საქმე",
-      money: "მიუთითე თანხა",
-      mainBusiness: "რა არის მთავარი საქმე?",
-    },
-  ]);
-  const handleDelete = (name) => {
-    const newData = dataSource.filter((item) => item.name !== name);
-    setDataSource(newData);
+  const [dataSource, Error, isLoading] = useFetchUpdateCulturesDetails(id);
+  console.log(dataSource);
+  const handleDelete = async (detailID) => {
+    await API.delete(`/cultures/details/${id}/${detailID}`)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    dispatch(apiCallRefresh(!state.apiCallRefresh));
   };
   const defaultColumns = [
     {
+      id: 1,
       title: "სახელი",
-      dataIndex: "name",
+      dataIndex: "taskName",
       width: "30%",
       editable: true,
     },
     {
-      title: "თანხა",
-      dataIndex: "money",
+      id: 2,
+      title: "შემოსავალი/ხარჯი",
+      dataIndex: "",
       editable: true,
     },
     {
-      title: "მოქმედება",
-      dataIndex: "mainBusiness",
+      id: 3,
+      title: "თანხა",
+      dataIndex: "price",
+      editable: true,
+    },
+    {
+      id: 4,
+      title: "თარიღი",
+      dataIndex: "plannedAt",
       editable: true,
     },
     {
@@ -128,7 +133,7 @@ const App = () => {
         dataSource.length >= 1 ? (
           <Popconfirm
             title="ნამდვილად გსურთ წაშლა?"
-            onConfirm={() => handleDelete(record.name)}
+            onConfirm={() => handleDelete(record.id)}
           >
             <a>წაშლა</a>
           </Popconfirm>
@@ -158,7 +163,7 @@ const App = () => {
       ...item,
       ...row,
     });
-    setDataSource(newData);
+    // setDataSource(newData);
   };
   // const components = {
   //   body: {
@@ -181,6 +186,9 @@ const App = () => {
       }),
     };
   });
+  if (Error) {
+    return <h1>{Error}</h1>;
+  }
   return (
     <div>
       <Button
@@ -198,18 +206,17 @@ const App = () => {
         bordered
         dataSource={dataSource}
         columns={columns}
+        loading={isLoading}
       />
-      {openModal && (
-        <Modal
-          title="დაამატე რამე"
-          onOk={() => setopenModal(false)}
-          onCancel={() => setopenModal(false)}
-          open={openModal}
-          footer={false}
-        >
-          <AddForm setopenModal={() => setopenModal()} />
-        </Modal>
-      )}
+      <Modal
+        title="დაამატე რამე"
+        onOk={() => setopenModal(false)}
+        onCancel={() => setopenModal(false)}
+        open={openModal}
+        footer={false}
+      >
+        <AddForm setopenModal={() => setopenModal()} id={id} />
+      </Modal>
     </div>
   );
 };

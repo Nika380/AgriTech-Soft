@@ -35,13 +35,13 @@ export async function POST(req: Request, res: any) {
         task_name: values.taskName,
         task_type: parseInt(values.taskType),
         planned_at: new Date(values.plannedAt),
-        price: values.price,
+        price: parseInt(values.price),
         status: 3,
       },
     });
     return NextResponse.json("Created Successfully", { status: 201 });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return NextResponse.json("Something Went Wrong", { status: 400 });
   }
 }
