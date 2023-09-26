@@ -12,7 +12,9 @@ const useFetchUpdateCulturesDetails = (id) => {
   const handleUpdapteCultureDetailsAPI = async () => {
     setisLoading(true);
     await API.get(`/cultures/details/${id}`)
-      .then((res) => setdataSource(res.data.content))
+      .then((res) => {
+        setdataSource(res.data.content), console.log(res);
+      })
       .catch((err) => setError(err.message))
       .finally(() => {
         setisLoading(false);

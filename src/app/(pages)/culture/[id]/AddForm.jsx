@@ -83,7 +83,7 @@ const Form = ({
   );
 };
 
-const AddForm = ({ setopenModal, id }) => {
+const AddForm = ({ setopenModal, id, record }) => {
   const { state, dispatch } = useGlobalContext();
   const [values, setvalues] = useState({
     taskName: "",
@@ -103,8 +103,20 @@ const AddForm = ({ setopenModal, id }) => {
     values.plannedAt,
   ];
   useEffect(() => {
-    test.forEach((item) => {
-      if (item.length > 0) {
+    if (record.id) {
+      console.log("action");
+      setvalues({
+        taskName: record.taskName,
+        taskType: record.taskType,
+        price: record.price,
+        plannedAt: record.plannedAt,
+      });
+    }
+  }, [record]);
+
+  useEffect(() => {
+    test?.forEach((item) => {
+      if (item?.length > 0) {
         setValueCheck(true);
       } else {
         setValueCheck(false);
@@ -162,7 +174,7 @@ const AddForm = ({ setopenModal, id }) => {
         <form>
           {addCultureAction.map((input) => (
             <Form
-              key={input.key}
+              key={input.id}
               {...input}
               value={values[input.name]}
               onChange={handleChange}
