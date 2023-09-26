@@ -3,10 +3,10 @@ import { prisma } from "@/prisma";
 import { setCultureDetailsDto } from "./CultureDetailsDto";
 
 export async function GET(req: Request, res: any) {
-  const { id } = res.params;
+  const { cultureId } = res.params;
   const detailsList = await prisma.culture_details.findMany({
     where: {
-      culture_id: parseInt(id),
+      culture_id: parseInt(cultureId),
     },
   });
 
