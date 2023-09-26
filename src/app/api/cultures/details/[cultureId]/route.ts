@@ -27,11 +27,11 @@ export async function GET(req: Request, res: any) {
 
 export async function POST(req: Request, res: any) {
   const { values } = await req.json();
-  const { id } = res.params;
+  const { cultureId } = res.params;
   try {
     await prisma.culture_details.create({
       data: {
-        culture_id: parseInt(id),
+        culture_id: parseInt(cultureId),
         task_name: values.taskName,
         task_type: parseInt(values.taskType),
         planned_at: new Date(values.plannedAt),
