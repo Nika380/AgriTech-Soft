@@ -35,8 +35,19 @@ function FileUploader() {
   console.log(selectOption);
 
   return (
-    <div>
-      <input type="file" onChange={handleFileChange} />
+    <div className="flex flex-row justify-center items-center">
+      <input
+        type="file"
+        onChange={handleFileChange}
+        className="hidden"
+        id="file"
+      />
+      <label
+        htmlFor="file"
+        className="h-24 w-36 rounded-md border-2 border-dashed border-blue-600 text-center hover:border-blue-400 text-blue-600 block leading-3 mr-11 text-xs cursor-pointer"
+      >
+        დაამატე სურათი
+      </label>
       <Space wrap>
         <Select
           defaultValue={plantOptions[0]}

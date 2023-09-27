@@ -7,6 +7,7 @@ import CardLoader from "./CardLoader";
 
 const CardWrapper = () => {
   const [data, error, isLoading] = useFetchCulturesAPI();
+  console.log(data);
   return (
     <div className="flex flex-row justify-around items-center flex-wrap p-6 pr-20 pb-36 pl-28">
       {error && <h1>{error}</h1>}

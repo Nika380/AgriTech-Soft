@@ -1,3 +1,4 @@
+/* eslint-disable import/namespace */
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import {
@@ -5,9 +6,6 @@ import {
   DeleteOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { Card } from "antd";
-import { API } from "../utils/API";
-import { useGlobalContext } from "../context/global/GlobalContextProvider";
 import {
   activeButton,
   apiCallRefresh,
@@ -15,7 +13,13 @@ import {
   handleEdit,
   openModal,
 } from "../context/actions/actionCreators";
+import { Card } from "antd";
+import { API } from "../utils/API";
+import { useGlobalContext } from "../context/global/GlobalContextProvider";
 import { useRouter } from "next/navigation";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Pie } from "react-chartjs-2";
+ChartJS.register(ArcElement, Tooltip, Legend);
 const { Meta } = Card;
 
 const CultureCardItem = ({ props }) => {
@@ -36,10 +40,25 @@ const CultureCardItem = ({ props }) => {
       .finally(() => setisLoading(false));
     dispatch(apiCallRefresh(!state.apiCallRefresh));
   };
+  const data = {
+    labels: ["შემოსავალი", "ხარჯი"],
+    datasets: [
+      {
+        data: [props.income, props.expense],
+        backgroundColor: ["#2ECC71", "#E74C3C"],
+      },
+    ],
+  };
+  const options = {};
 
   return (
     <>
       <Card
+        cover={
+          <div className="w-8">
+            <Pie data={data} options={options}></Pie>
+          </div>
+        }
         style={{
           width: 300,
           marginBottom: "70px",
