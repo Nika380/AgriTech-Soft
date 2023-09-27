@@ -8,6 +8,10 @@ import {
 } from "../../../../context/actions/actionCreators";
 import { addCultureAction } from "../../../../constants/constants";
 import { Button, Space, DatePicker } from "antd";
+import {
+  cultureAction,
+  openModal,
+} from "../../../../context/actions/actionCreators";
 
 const Form = ({
   label,
@@ -83,14 +87,9 @@ const Form = ({
   );
 };
 
-const AddForm = ({ setopenModal, id, record }) => {
+const AddForm = ({ id }) => {
   const { state, dispatch } = useGlobalContext();
-  const [values, setvalues] = useState({
-    taskName: "",
-    taskType: "",
-    price: "",
-    plannedAt: "",
-  });
+  const values = state.cultureAction;
   const [isLoading, setisLoading] = useState(false);
   const [ValueCheck, setValueCheck] = useState(false);
   const [activeButton, setactiveButton] = useState(false);
@@ -102,18 +101,7 @@ const AddForm = ({ setopenModal, id, record }) => {
     values.price,
     values.plannedAt,
   ];
-  useEffect(() => {
-    if (record.id) {
-      console.log("action");
-      setvalues({
-        taskName: record.taskName,
-        taskType: record.taskType,
-        price: record.price,
-        plannedAt: record.plannedAt,
-      });
-    }
-  }, [record]);
-
+  console.log(values);
   useEffect(() => {
     test?.forEach((item) => {
       if (item?.length > 0) {
@@ -134,35 +122,40 @@ const AddForm = ({ setopenModal, id, record }) => {
     setisLoading(true);
     setactiveButton(true);
     if (values.id) {
-      await API.put(`//${values.id}`, { values })
+      console.log("edit");
+      await API.put(`/cultures/details/${id}/${values.id}`, { values })
         .then((res) => console.log(res))
         .catch((err) => console.log(err))
         .finally(() => {
           dispatch(handleEdit(false)), setisLoading(false);
         });
-      setvalues({ taskName: "", taskType: "", price: "", plannedAt: "" });
+      dispatch(
+        cultureAction({ taskName: "", taskType: "", price: "", plannedAt: "" })
+      );
       dispatch(apiCallRefresh(!state.apiCallRefresh));
-      setopenModal(false);
+      dispatch(openModal(!state.openModal));
     } else {
       await API.post(`/cultures/details/${id}`, { values })
         .then((res) => console.log(res))
         .catch((err) => console.log(err))
         .finally(() => setisLoading(false));
-      setvalues({ taskName: "", taskType: "", price: "", plannedAt: "" });
+      dispatch(
+        cultureAction({ taskName: "", taskType: "", price: "", plannedAt: "" })
+      );
       dispatch(apiCallRefresh(!state.apiCallRefresh));
-      setopenModal(false);
+      dispatch(openModal(!state.openModal));
     }
   };
 
   useEffect(() => {
-    setvalues({ ...values, taskType: optionsValue });
+    dispatch(cultureAction({ ...values, taskType: optionsValue }));
   }, [optionsValue]);
   useEffect(() => {
-    setvalues({ ...values, plannedAt: data });
+    dispatch(cultureAction({ ...values, plannedAt: data }));
   }, [data]);
 
   const handleChange = (e) => {
-    setvalues({ ...values, [e.target.name]: e.target.value });
+    dispatch(cultureAction({ ...values, [e.target.name]: e.target.value }));
   };
 
   const onChange = (data, dateString) => {
@@ -196,7 +189,10 @@ const AddForm = ({ setopenModal, id, record }) => {
             </div>
           </Space>
           <Space wrap className="flex flex-row justify-between">
-            <Button danger onClick={() => setopenModal((prev) => !prev)}>
+            <Button
+              danger
+              onClick={() => dispatch(openModal(!state.openModal))}
+            >
               გამოსვლა
             </Button>
             <Button

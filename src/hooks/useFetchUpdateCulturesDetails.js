@@ -9,20 +9,26 @@ const useFetchUpdateCulturesDetails = (id) => {
   const [Error, setError] = useState("");
   const [isLoading, setisLoading] = useState(false);
 
-  const handleUpdapteCultureDetailsAPI = async () => {
+  const handleUpdateCultureDetailsAPI = async () => {
     setisLoading(true);
-    await API.get(`/cultures/details/${id}`)
-      .then((res) => {
-        setdataSource(res.data.content), console.log(res);
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => {
-        setisLoading(false);
-      });
+    try {
+      const res = await API.get(`/cultures/details/${id}`);
+      const modifiedData = res.data.content.map((item) => ({
+        ...item,
+        taskType: item.taskType === 1 ? "შემოსავალი" : "ხარჯი",
+        plannedAt: item.plannedAt.slice(0, 10),
+      }));
+      setdataSource(modifiedData);
+      console.log(modifiedData);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setisLoading(false);
+    }
   };
 
   useEffect(() => {
-    handleUpdapteCultureDetailsAPI();
+    handleUpdateCultureDetailsAPI();
   }, [state.apiCallRefresh]);
 
   return [dataSource, Error, isLoading];

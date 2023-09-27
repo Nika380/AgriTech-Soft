@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import { Button, Popconfirm, Table, Modal, Space } from "antd";
 import { useParams } from "next/navigation";
@@ -8,15 +8,18 @@ import AddForm from "./AddForm";
 import useFetchUpdateCulturesDetails from "../../../../hooks/useFetchUpdateCulturesDetails";
 import { API } from "../../.../../../../utils/API";
 import { useGlobalContext } from "../../../../context/global/GlobalContextProvider";
-import { apiCallRefresh } from "../../../../context/actions/actionCreators";
+import {
+  apiCallRefresh,
+  openModal,
+  cultureAction,
+} from "../../../../context/actions/actionCreators";
 
 const App = () => {
   const router = useRouter();
   const { state, dispatch } = useGlobalContext();
-  const [openModal, setopenModal] = useState(false);
   const { id } = useParams();
   const [dataSource, Error, isLoading] = useFetchUpdateCulturesDetails(id);
-  const [record, setrecord] = useState({});
+  // const [record, setrecord] = useState({});
   const handleDelete = async (detailID) => {
     await API.delete(`/cultures/details/${id}/${detailID}`)
       .then((res) => console.log(res))
@@ -25,8 +28,16 @@ const App = () => {
   };
 
   const handleEdit = (record) => {
-    setrecord(record);
-    setopenModal(true);
+    dispatch(
+      cultureAction({
+        taskName: record.taskName,
+        taskType: record.taskType === "შემოსავალი" ? "1" : "2",
+        price: record.price,
+        plannedAt: record.plannedAt,
+        id: record.id,
+      })
+    );
+    dispatch(openModal(!state.openModal));
   };
 
   const defaultColumns = [
@@ -77,7 +88,9 @@ const App = () => {
             title="ნამდვილად გსურთ ცვლილება?"
             onConfirm={() => handleEdit(record)}
           >
-            <Button size="small">ცვლილება</Button>
+            <Button size="small" className="border-blue-600 text-blue-600">
+              ცვლილება
+            </Button>
           </Popconfirm>
         ) : null,
     },
@@ -109,7 +122,17 @@ const App = () => {
         <Button
           type="primary"
           ghost
-          onClick={() => setopenModal(true)}
+          onClick={() => {
+            dispatch(openModal(!state.openModal));
+            dispatch(
+              cultureAction({
+                taskName: "",
+                taskType: "",
+                price: "",
+                plannedAt: "",
+              })
+            );
+          }}
           style={{
             marginBottom: 16,
           }}
@@ -126,12 +149,12 @@ const App = () => {
       />
       <Modal
         title="დაამატე რამე"
-        onOk={() => setopenModal(false)}
-        onCancel={() => setopenModal(false)}
-        open={openModal}
+        onOk={() => dispatch(openModal(!state.openModal))}
+        onCancel={() => dispatch(openModal(!state.openModal))}
+        open={state.openModal}
         footer={false}
       >
-        <AddForm setopenModal={() => setopenModal()} id={id} record={record} />
+        <AddForm id={id} />
       </Modal>
     </>
   );

@@ -4,6 +4,7 @@ import {
   CURRENTCULTUREVALUE,
   ACRTIVEFORMBTN,
   EDITISON,
+  ADDCULTUREACTION,
 } from "./actions";
 
 const apiCallRefresh = (payload) => {
@@ -40,6 +41,12 @@ const handleEdit = (payload) => {
     payload,
   };
 };
+const cultureAction = (payload) => {
+  return {
+    type: ADDCULTUREACTION,
+    payload,
+  };
+};
 
 export {
   apiCallRefresh,
@@ -47,4 +54,5 @@ export {
   currentCultureValue,
   activeButton,
   handleEdit,
+  cultureAction,
 };

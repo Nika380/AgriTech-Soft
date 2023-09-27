@@ -7,7 +7,7 @@ export const inputs = [
     errorMessage:
       "ტექსტი უნდა შეადგენდეს მინიმუმ 2 და მაქსიმუმ 30 ასოს და არ უნდა შეადგენდეს სიმბოლოს",
     label: "კულტურის დასახელება",
-    pattern: "^[A-Za-z0-9ა-ჰ]{2,30}$",
+    pattern: "^[A-Za-z0-9ა-ჰ ]{2,30}$",
     required: true,
   },
   {
@@ -29,7 +29,7 @@ export const inputs = [
     errorMessage:
       "ტექსტი უნდა შეადგენდეს მინიმუმ 2 და მაქსიმუმ 30 ასოს და არ უნდა შეადგენდეს სიმბოლოს",
     label: "ადგილმდებარეობა",
-    pattern: "^[A-Za-z0-9ა-ჰ]{2,30}$",
+    pattern: "^[A-Za-z0-9ა-ჰ ]{2,30}$",
     required: true,
   },
 ];
@@ -42,7 +42,7 @@ export const addCultureAction = [
     placeholder: "სახელი",
     errorMessage: "სახელწოდების მითითება აუცილებელია",
     label: "სახელი",
-    pattern: "^[A-Za-z0-9ა-ჰ]{1,30}$",
+    pattern: "^[A-Za-z0-9ა-ჰ ]{1,30}$",
     required: true,
   },
   {
