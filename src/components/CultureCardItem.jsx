@@ -44,7 +44,10 @@ const CultureCardItem = ({ props }) => {
     labels: ["შემოსავალი", "ხარჯი"],
     datasets: [
       {
-        data: [props.income, props.expense],
+        data: [
+          props.income ? props.income : "1",
+          props.expense ? props.expense : "1",
+        ],
         backgroundColor: ["#2ECC71", "#E74C3C"],
       },
     ],
@@ -55,8 +58,12 @@ const CultureCardItem = ({ props }) => {
     <>
       <Card
         cover={
-          <div className="w-8">
-            <Pie data={data} options={options}></Pie>
+          <div className="w-6">
+            <Pie
+              data={data}
+              options={options}
+              style={{ width: "225px", height: "225px", marginLeft: "5px" }}
+            ></Pie>
           </div>
         }
         style={{
