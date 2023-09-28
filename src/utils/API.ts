@@ -6,3 +6,4 @@ export const API = axios.create({
   baseURL: domainURL,
   timeout: 20000,
 });
+

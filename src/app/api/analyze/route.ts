@@ -2,33 +2,53 @@ import { NextResponse } from "next/server";
 import axios from "axios";
 
 export async function POST(req: Request, res: any) {
+  const options = [
+    {
+      value: 1,
+      endpoint: "predict-grapes",
+    },
+    {
+      value: 2,
+      endpoint: "predict-tomato",
+    },
+    {
+      value: 3,
+      endpoint: "predict-pepper",
+    },
+    {
+      value: 4,
+      endpoint: "predict-potato",
+    },
+  ];
+
   try {
-    const image = await req.formData();
-    const file: any = image.get("file");
-
-    // Send the file data as a FormData object
-    const formData = new FormData();
-    formData.append("file", file);
-
+    const data = await req.formData();
+    const image: any = data.get("file");
+    const file = new FormData();
+    file.append("file", image);
+    const option: any = data.get("option");
+    const selectedOption = options.find(
+      (opt) => opt.value === parseInt(option)
+    );
     let response;
-    // try {
-    //   response = await axios.post(
-    //     "http://localhost:8000/predict-grapes",
-    //     formData,
-    //     {
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //     }
-    //   );
-    // } catch (error) {
-    //   console.log(error);
-    //   return NextResponse.json("Error from AI endpoint", { status: 409 });
-    // }
-    // const res = {
-    //   content: response.data,
-    // };
-    return NextResponse.json("file is correct", { status: 200 });
+    try {
+      response = await axios.post(
+        `http://localhost:8000/${selectedOption?.endpoint}`,
+        file,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      return NextResponse.json("Error from AI endpoint", { status: 409 });
+    }
+    const res = {
+      content: response.data,
+    };
+    return NextResponse.json(res, { status: 200 });
   } catch (error) {
     return NextResponse.json("Something Went Wrong", { status: 400 });
   }
