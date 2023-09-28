@@ -1,16 +1,16 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Select, Space } from "antd";
+import { Button, Select, Space } from "antd";
+import API from "../utils/API";
 
 function FileUploader() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectOption, setSelectOption] = useState(null);
   const plantOptions = [
-    { value: 0, label: "აირჩიეთ მცენარე" },
     { value: 1, label: "ყურძენი" },
     { value: 2, label: "პომიდორი" },
     { value: 3, label: "წიწაკა" },
-    { value: 4, label: "ლობიო" },
+    { value: 4, label: "კარტოფილი" },
   ];
 
   const handleFileChange = (e) => {
@@ -22,17 +22,17 @@ function FileUploader() {
     setSelectOption(value);
   };
 
-  useEffect(() => {
-    if (selectedFile && selectOption) {
-      var formData = new FormData();
-      formData.append("file", selectedFile);
-      formData.append("Text", JSON.stringify(selectOption));
-    }
-    console.log(formData);
-  }, [selectedFile, selectOption]);
-
-  console.log(selectedFile);
-  console.log(selectOption);
+  const analysePlant = async () => {
+    const data = new FormData();
+    data.append("file", selectedFile);
+    data.append("option", selectOption);
+    const response = await API.post("/analyze", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log(response.data);
+  };
 
   return (
     <div className="flex flex-row justify-center items-center">
@@ -50,7 +50,7 @@ function FileUploader() {
       </label>
       <Space wrap>
         <Select
-          defaultValue={plantOptions[0]}
+          placeholder="აირჩიეთ მცენარე"
           style={{
             width: 200,
           }}
@@ -61,6 +61,7 @@ function FileUploader() {
           onChange={handleSelectChange}
         />
       </Space>
+      <Button onClick={() => analysePlant()}>შემოწმება</Button>
     </div>
   );
 }
