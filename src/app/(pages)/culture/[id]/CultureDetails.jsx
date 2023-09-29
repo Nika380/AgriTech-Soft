@@ -73,6 +73,9 @@ const App = () => {
           <Popconfirm
             title="ნამდვილად გსურთ წაშლა?"
             onConfirm={() => handleDelete(record.id)}
+            okType="danger"
+            okText="კი"
+            cancelText="არა"
           >
             <Button danger size="small">
               წაშლა
@@ -87,6 +90,9 @@ const App = () => {
           <Popconfirm
             title="ნამდვილად გსურთ ცვლილება?"
             onConfirm={() => handleEdit(record)}
+            okType="danger"
+            okText="კი"
+            cancelText="არა"
           >
             <Button size="small" className="border-blue-600 text-blue-600">
               ცვლილება
@@ -112,7 +118,7 @@ const App = () => {
         <Button
           type="primary"
           ghost
-          onClick={() => router.push(`/culture/`)}
+          onClick={() => router.push("/culture")}
           style={{
             marginBottom: 16,
           }}

@@ -122,7 +122,6 @@ const AddForm = ({ id }) => {
     setisLoading(true);
     setactiveButton(true);
     if (values.id) {
-      console.log("edit");
       await API.put(`/cultures/details/${id}/${values.id}`, { values })
         .then((res) => console.log(res))
         .catch((err) => console.log(err))
