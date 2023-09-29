@@ -10,24 +10,7 @@ import { HiOutlineMenu, HiHome } from "react-icons/hi";
 import { PiPlantBold } from "react-icons/pi";
 import { BiSolidAnalyse } from "react-icons/bi";
 import { MdOutlineRecommend } from "react-icons/md";
-// import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-// import EqualizerIcon from "@mui/icons-material/Equalizer";
-// import HandshakeIcon from "@mui/icons-material/Handshake";
 import "../assets/styles/globals.scss";
-// import { useSelector } from "react-redux";
-// import { RootState } from "@/redux/store";
-// import LogoutMenu from "./LogoutMenu";
-// import { Button } from "@mui/material";
-// import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-// import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
-
-import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
 import Weather from "./Weather";
 
 const SideNav = ({ children }: any) => {
@@ -111,7 +94,7 @@ const SideNav = ({ children }: any) => {
         >
           <div className="flex justify-between items-center">
             <div className="top-6">
-              <h1 className="h-12 text-white">Logo Name</h1>
+              <div className="logo"></div>
             </div>
             <Weather />
             <div className="absolute md:hidden block top-6 right-3 ">

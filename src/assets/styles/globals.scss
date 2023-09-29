@@ -55,3 +55,12 @@
     transform: rotate(1turn);
   }
 }
+
+.logo {
+  background-image: url("../../mouravi-logo.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 180px;
+  height: 100px;
+  background-position: bottom;
+}
