@@ -3,7 +3,8 @@ interface CultureDetailsDto {
   taskName: string;
   taskType: number;
   price: number;
-  plannedAt: Date;
+  plannedFrom: Date;
+  plannedTo: Date;
 }
 
 export const setCultureDetailsDto = async (data: any) => {
@@ -12,7 +13,8 @@ export const setCultureDetailsDto = async (data: any) => {
     taskName: data.task_name,
     taskType: data.task_type,
     price: data.price,
-    plannedAt: data.planned_at,
+    plannedFrom: data.planned_from,
+    plannedTo: data.planned_to,
   };
 
   return detail;

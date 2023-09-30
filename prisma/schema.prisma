@@ -36,13 +36,14 @@ model culture_details {
   task_type       Int
   price           Float
   status          Int
-  planned_at      DateTime        @db.Timestamp(6)
   created_at      DateTime        @default(now()) @db.Timestamp(6)
   updated_at      DateTime        @default(now()) @db.Timestamp(6)
   created_by      Int?
   updated_by      Int?
-  culture_id      Int?
-  cultures        cultures?       @relation(fields: [culture_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "culture_details_cultures_id_fk")
+  culture_id      Int
+  planned_from    DateTime?       @db.Timestamp(6)
+  planned_to      DateTime?       @db.Timestamp(6)
+  cultures        cultures        @relation(fields: [culture_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "culture_details_cultures_id_fk")
   zlib_statuses   zlib_statuses   @relation(fields: [status], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "culture_details_zlib_statuses_id_fk")
   zlib_task_types zlib_task_types @relation(fields: [task_type], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "culture_details_zlib_task_types_id_fk")
 }
@@ -57,4 +58,23 @@ model zlib_task_types {
   id              Int               @id(map: "zlib_task_types_pk") @default(autoincrement())
   type_name       String
   culture_details culture_details[]
+}
+
+model agrocalendar {
+  id                          Int     @id(map: "agrocalendar_pk") @default(autoincrement())
+  culture_name                String
+  planting_start              String?
+  planting_end                String?
+  gaxvla_start                String?
+  gasxvla_end                 String?
+  natesebis_damushaveba_start String?
+  natesebis_damushaveba_end   String?
+  sasuqebis_shetana_start     String?
+  sasuqebis_shetana_end       String?
+  morwkva_start               String?
+  morwkva_end                 String?
+  daavadebebtan_brdzola_start String?
+  daavadebebtan_brdzola_end   String?
+  mosavlis_ageba_start        String?
+  mosavlis_ageba_end          String?
 }
