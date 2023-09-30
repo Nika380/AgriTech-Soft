@@ -3,7 +3,7 @@ export const inputs = [
     id: 1,
     name: "cultureName",
     type: "text",
-    placeholder: "მაგ. კახეთს ვენახები",
+    placeholder: "მაგ. კახეთის ვენახები",
     errorMessage:
       "ტექსტი უნდა შეადგენდეს მინიმუმ 2 და მაქსიმუმ 30 ასოს და არ უნდა შეადგენდეს სიმბოლოს",
     label: "კულტურის დასახელება",

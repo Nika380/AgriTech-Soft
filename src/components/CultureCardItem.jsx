@@ -58,16 +58,18 @@ const CultureCardItem = ({ props }) => {
     <>
       <Card
         cover={
-          <div className="w-6">
+          <>
             <Pie
               data={data}
               options={options}
-              style={{ width: "225px", height: "225px", marginLeft: "5px" }}
+              // style={{ width: "250px", height: "250px" }}
+              className="w-[200px] h-[200px]"
             ></Pie>
-          </div>
+          </>
         }
         style={{
-          width: 300,
+          width: 250,
+          maxHeight: 450,
           marginBottom: "70px",
         }}
         actions={[

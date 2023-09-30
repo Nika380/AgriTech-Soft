@@ -33,7 +33,7 @@ export async function POST(req: Request, res: any) {
     let response;
     try {
       response = await axios.post(
-        `http://localhost:8000/${selectedOption?.endpoint}`,
+        `http://192.168.50.224:8000/${selectedOption?.endpoint}`,
         file,
         {
           headers: {
