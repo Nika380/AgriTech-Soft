@@ -19,7 +19,6 @@ const App = () => {
   const { state, dispatch } = useGlobalContext();
   const { id } = useParams();
   const [dataSource, Error, isLoading] = useFetchUpdateCulturesDetails(id);
-  // const [record, setrecord] = useState({});
   const handleDelete = async (detailID) => {
     await API.delete(`/cultures/details/${id}/${detailID}`)
       .then((res) => console.log(res))
@@ -73,6 +72,9 @@ const App = () => {
           <Popconfirm
             title="ნამდვილად გსურთ წაშლა?"
             onConfirm={() => handleDelete(record.id)}
+            okType="danger"
+            okText="კი"
+            cancelText="არა"
           >
             <Button danger size="small">
               წაშლა
@@ -87,6 +89,9 @@ const App = () => {
           <Popconfirm
             title="ნამდვილად გსურთ ცვლილება?"
             onConfirm={() => handleEdit(record)}
+            okType="danger"
+            okText="კი"
+            cancelText="არა"
           >
             <Button size="small" className="border-blue-600 text-blue-600">
               ცვლილება
@@ -104,7 +109,14 @@ const App = () => {
   });
 
   if (Error) {
-    return <h1>{Error}</h1>;
+    return (
+      <div className="flex flex-col justify-center items-center w-full h-[80%]">
+        <h1 className="text-white text-2xl mb-[100px]">კავშირის შეფერხება</h1>
+        <Button type="primary" ghost onClick={() => window.location.reload()}>
+          ხელმეორედ ცდა
+        </Button>
+      </div>
+    );
   }
   return (
     <>
@@ -112,7 +124,7 @@ const App = () => {
         <Button
           type="primary"
           ghost
-          onClick={() => router.push(`/culture/`)}
+          onClick={() => router.back()}
           style={{
             marginBottom: 16,
           }}

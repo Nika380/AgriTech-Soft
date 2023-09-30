@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useGlobalContext } from "../../../../context/global/GlobalContextProvider";
 import { API } from "../../../../utils/API";
 import {
@@ -7,11 +7,12 @@ import {
   handleEdit,
 } from "../../../../context/actions/actionCreators";
 import { addCultureAction } from "../../../../constants/constants";
-import { Button, Space, DatePicker } from "antd";
+import { Button, Space, DatePicker, Select } from "antd";
 import {
   cultureAction,
   openModal,
 } from "../../../../context/actions/actionCreators";
+import dayjs from "dayjs";
 
 const Form = ({
   label,
@@ -20,10 +21,11 @@ const Form = ({
   setOptionValue,
   ...inputProps
 }) => {
+  const { state } = useGlobalContext();
+  const LabeledValue = state.cultureAction.taskType;
   const [focused, setfocused] = useState(false);
-  const ref = useRef(null);
-  const handleSelectChange = () => {
-    setOptionValue(ref.current.value);
+  const handleSelectChange = (value) => {
+    setOptionValue(value);
   };
 
   const handleFocuse = () => {
@@ -39,19 +41,26 @@ const Form = ({
   return (
     <>
       {inputProps?.select ? (
-        <div className="mb-4">
+        <>
           <label className="block font-medium mb-1 text-black">{label}</label>
-          <select
-            ref={ref}
+          <Select
             className={`backdrop-blur-lg w-full p-2 border rounded ${
               focused && "border-red-600"
             }`}
+            defaultValue={`${LabeledValue}`}
             onChange={handleSelectChange}
-          >
-            <option value={"0"}>მიუთითეთ შემოსავლის ტიპი</option>
-            <option value={"1"}>შემოსავალი</option>
-            <option value={"2"}>ხარჯი</option>
-          </select>
+            placeholder="მიუთითეთ შემოსავლის ტიპი"
+            options={[
+              {
+                label: "მიუთითეთ შემოსავლის ტიპი",
+                options: [
+                  { label: "ხარჯი", value: "2" },
+                  { label: "შემოსავალი", value: "1" },
+                ],
+              },
+            ]}
+            style={{ height: 50, marginBottom: "16px" }}
+          />
           <span
             className={`text-center p-1 text-red-600 text-xs ${
               focused ? "block" : "hidden"
@@ -59,7 +68,7 @@ const Form = ({
           >
             {errorMessage}
           </span>
-        </div>
+        </>
       ) : (
         <div className="mb-4">
           <label className="block font-medium mb-1 text-black">{label}</label>
@@ -122,7 +131,6 @@ const AddForm = ({ id }) => {
     setisLoading(true);
     setactiveButton(true);
     if (values.id) {
-      console.log("edit");
       await API.put(`/cultures/details/${id}/${values.id}`, { values })
         .then((res) => console.log(res))
         .catch((err) => console.log(err))
@@ -157,7 +165,6 @@ const AddForm = ({ id }) => {
   const handleChange = (e) => {
     dispatch(cultureAction({ ...values, [e.target.name]: e.target.value }));
   };
-
   const onChange = (data, dateString) => {
     setdata(dateString);
   };
@@ -183,6 +190,11 @@ const AddForm = ({ id }) => {
                 თარიღი
               </label>
               <DatePicker
+                defaultValue={
+                  state.cultureAction.plannedAt
+                    ? dayjs(state.cultureAction.plannedAt, "YYYY-MM")
+                    : dayjs()
+                }
                 onChange={onChange}
                 className="backdrop-blur-lg w-full p-2 border rounded"
               />
