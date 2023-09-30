@@ -28,6 +28,7 @@ export async function GET(req: Request, res: any) {
 export async function POST(req: Request, res: any) {
   const { values } = await req.json();
   const { cultureId } = res.params;
+  console.log(values)
   try {
     await prisma.culture_details.create({
       data: {

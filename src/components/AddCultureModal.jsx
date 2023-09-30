@@ -5,24 +5,17 @@ import AddCultureForm from "./AddCultureForm";
 import { useGlobalContext } from "../context/global/GlobalContextProvider";
 import { activeButton, openModal } from "../context/actions/actionCreators";
 import { currentCultureValue } from "../context/actions/actionCreators";
+import AntdAddCultureform from "./AntdAddCultureForm";
+import { useState } from "react";
 
 const AddCultureModal = () => {
-  const { state, dispatch } = useGlobalContext();
+  const [openModal, setOpenModal] = useState(false);
+
   return (
     <>
       <div className="flex justify-end sm:justify-end items-center sm:flex-row flex-col mt-auto py-10">
         <Button
-          onClick={() => {
-            dispatch(openModal(!state.openModal)),
-              dispatch(activeButton(true)),
-              dispatch(
-                currentCultureValue({
-                  cultureName: "",
-                  squareMeter: "",
-                  location: "",
-                })
-              );
-          }}
+          onClick={() => setOpenModal(true)}
           className="text-white bg-[#2d3d51] sm:mt-0 mt-5 sm:mr-10"
         >
           კულტურის დამატება
@@ -30,14 +23,14 @@ const AddCultureModal = () => {
       </div>
 
       <Modal
-        title={state?.values?.id ? "კულტურის რედაქტირება" : "ახალი კულტურა"}
-        open={state.openModal}
-        onOk={() => dispatch(openModal(!state.openModal))}
-        onCancel={() => dispatch(openModal(!state.openModal))}
+        // title={state?.values?.id ? "კულტურის რედაქტირება" : "ახალი კულტურა"}
+        open={openModal}
+        onOk={() => setOpenModal(false)}
+        onCancel={() => setOpenModal(false)}
         className="text-black bg-blur"
         footer={false}
       >
-        <AddCultureForm />
+        <AntdAddCultureform />
       </Modal>
     </>
   );

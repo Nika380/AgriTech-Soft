@@ -13,11 +13,18 @@ import {
   openModal,
   cultureAction,
 } from "../../../../context/actions/actionCreators";
+import AntdForm from "./AntdForm";
+import { useState } from "react";
+import EditForm from "./EditForm";
 
 const App = () => {
   const router = useRouter();
   const { state, dispatch } = useGlobalContext();
   const { id } = useParams();
+  const [updateId, setUpdateId] = useState(null);
+  const [openAddModal, setopenAddModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [data, setData] = useState(null);
   const [dataSource, Error, isLoading] = useFetchUpdateCulturesDetails(id);
   const handleDelete = async (detailID) => {
     await API.delete(`/cultures/details/${id}/${detailID}`)
@@ -27,16 +34,19 @@ const App = () => {
   };
 
   const handleEdit = (record) => {
-    dispatch(
-      cultureAction({
-        taskName: record.taskName,
-        taskType: record.taskType === "შემოსავალი" ? "1" : "2",
-        price: record.price,
-        plannedAt: record.plannedAt,
-        id: record.id,
-      })
-    );
-    dispatch(openModal(!state.openModal));
+    setOpenEditModal(true)
+    setData(record)
+    // dispatch(
+    //   cultureAction({
+    //     taskName: record.taskName,
+    //     taskType: record.taskType === "შემოსავალი" ? "1" : "2",
+    //     price: record.price,
+    //     plannedFrom: record.plannedFrom,
+    //     plannedTo: record.plannedTo,
+    //     id: record.id,
+    //   })
+    // );
+    // dispatch(openModal(!state.openModal));
   };
 
   const defaultColumns = [
@@ -61,12 +71,18 @@ const App = () => {
     },
     {
       id: 4,
-      title: "თარიღი",
-      dataIndex: "plannedAt",
+      title: "დაწყების თარიღი",
+      dataIndex: "plannedFrom",
       editable: true,
     },
     {
       id: 5,
+      title: "დასრულების თარიღი",
+      dataIndex: "plannedTo",
+      editable: true,
+    },
+    {
+      id: 6,
       render: (_, record) =>
         dataSource.length >= 1 ? (
           <Popconfirm
@@ -83,7 +99,7 @@ const App = () => {
         ) : null,
     },
     {
-      id: 6,
+      id: 7,
       render: (_, record) =>
         dataSource.length >= 1 ? (
           <Popconfirm
@@ -135,15 +151,17 @@ const App = () => {
           type="primary"
           ghost
           onClick={() => {
-            dispatch(openModal(!state.openModal));
-            dispatch(
-              cultureAction({
-                taskName: "",
-                taskType: "",
-                price: "",
-                plannedAt: "",
-              })
-            );
+            // dispatch(openModal(!state.openModal));
+            // dispatch(
+            //   cultureAction({
+            //     taskName: "",
+            //     taskType: "",
+            //     price: "",
+            //     plannedFrom: "",
+            //     plannedTo: "",
+            //   })
+            // );
+            setopenAddModal(true);
           }}
           style={{
             marginBottom: 16,
@@ -161,12 +179,25 @@ const App = () => {
       />
       <Modal
         title="დაამატე რამე"
-        onOk={() => dispatch(openModal(!state.openModal))}
-        onCancel={() => dispatch(openModal(!state.openModal))}
-        open={state.openModal}
+        onOk={() => setopenAddModal(false)}
+        onCancel={() => setopenAddModal(false)}
+        open={openAddModal}
         footer={false}
+        style={{ minHeight: "50vh" }}
       >
-        <AddForm id={id} />
+        {/* <AddForm id={id} /> */}
+        <AntdForm id={id} />
+      </Modal>
+      <Modal
+        title="დაამატე რამე"
+        onOk={() => setOpenEditModal(false)}
+        onCancel={() => setOpenEditModal(false)}
+        open={openEditModal}
+        footer={false}
+        style={{ minHeight: "50vh" }}
+      >
+        {/* <AddForm id={id} /> */}
+        <EditForm cultureId={id} detailId={updateId} record={data}/>
       </Modal>
     </>
   );

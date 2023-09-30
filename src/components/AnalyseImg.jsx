@@ -8,11 +8,12 @@ function FileUploader() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectOption, setSelectOption] = useState(null);
   const [actuveButton, setactuveButton] = useState(true);
-  const responseData = {
-    class: "ragaca",
-    confidence: "123%",
-    medicineList: ["123", "wamali", "wamali2"],
-  };
+  const [responseData, setResponseData] = useState(null);
+  // const responseData = {
+  //   class: "ragaca",
+  //   confidence: "123%",
+  //   medicineList: ["123", "wamali", "wamali2"],
+  // };
   const plantOptions = [
     { value: 1, label: "ყურძენი" },
     { value: 2, label: "პომიდორი" },
@@ -47,6 +48,7 @@ function FileUploader() {
       },
     });
     console.log(response.data);
+    setResponseData(response.data.content);
   };
 
   return (
@@ -89,21 +91,25 @@ function FileUploader() {
                 className="absolute flex flex-col justify-center items-center w-full h-[100px] bottom-0 rounded-2xl"
                 style={{ backgroundColor: "rgb(51 51 51 / 52%)" }}
               >
-                <div className="flex flex-row w-[60%] justify-center items-center mb-2">
-                  <h4 className="text-white text-xl mr-[25px] ">
-                    {responseData.class}
-                  </h4>
-                  <p className="text-white text-xl ">
-                    {responseData.confidence}
-                  </p>
-                </div>
-                <div className="flex justify-center items-center w-full">
-                  {responseData.medicineList.map((item, i) => (
-                    <p key={i} className="mr-[15px] text-white text-sm">
-                      {item}
-                    </p>
-                  ))}
-                </div>
+                {responseData && (
+                  <>
+                    <div className="flex flex-row w-[60%] justify-center items-center mb-2">
+                      <h4 className="text-white text-xl mr-[25px] ">
+                        {responseData.class}
+                      </h4>
+                      <p className="text-white text-xl ">
+                        {responseData.confidence}
+                      </p>
+                    </div>
+                    <div className="flex justify-center items-center w-full">
+                      {responseData.medicineList.map((item, i) => (
+                        <p key={i} className="mr-[15px] text-white text-sm">
+                          {item}
+                        </p>
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>

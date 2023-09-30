@@ -32,6 +32,16 @@ export const inputs = [
     pattern: "^[A-Za-z0-9ა-ჰ ]{2,30}$",
     required: true,
   },
+   {
+    id: 4,
+    name: "agrocalendar",
+    type: "select",
+    placeholder: "თანხა",
+    errorMessage: "თანხის მითითება სავალდებულოა",
+    label: "თანხა",
+    pattern: "^\\d+$",
+    required: true,
+  },
 ];
 
 export const addCultureAction = [

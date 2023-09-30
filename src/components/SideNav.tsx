@@ -18,15 +18,15 @@ const SideNav = ({ children }: any) => {
   const pathname = usePathname().split("/")[1];
   const router = useRouter();
   const menuItems = [
-    {
-      label: "მთავარი",
-      key: "home",
-      icon: (
-        <Link href={"/home"}>
-          <HiHome />
-        </Link>
-      ),
-    },
+    // {
+    //   label: "მთავარი",
+    //   key: "home",
+    //   icon: (
+    //     <Link href={"/home"}>
+    //       <HiHome />
+    //     </Link>
+    //   ),
+    // },
     {
       label: "კულტურები",
       key: "culture",

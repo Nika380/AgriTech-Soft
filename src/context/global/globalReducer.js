@@ -43,12 +43,14 @@ const initialState = {
     cultureName: "",
     squareMeter: "",
     location: "",
+    agrocalendar: ""
   },
   cultureAction: {
     taskName: "",
     taskType: "",
     price: "",
-    plannedAt: "",
+    plannedFrom: "",
+    plannedTo: "",
   },
 };
 

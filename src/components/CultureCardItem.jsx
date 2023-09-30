@@ -13,7 +13,7 @@ import {
   handleEdit,
   openModal,
 } from "../context/actions/actionCreators";
-import { Card } from "antd";
+import { Card, Modal } from "antd";
 import { API } from "../utils/API";
 import { useGlobalContext } from "../context/global/GlobalContextProvider";
 import { useRouter } from "next/navigation";
@@ -21,16 +21,19 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 ChartJS.register(ArcElement, Tooltip, Legend);
 const { Meta } = Card;
+import AntdEditCultureModal from "./AntdEditCultureModal";
 
 const CultureCardItem = ({ props }) => {
   const { state, dispatch } = useGlobalContext();
+  const [openModal, setOpenModal] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const router = useRouter();
   const editCultureCard = async (values) => {
-    dispatch(openModal(!state.openModal));
-    dispatch(activeButton(false));
-    dispatch(handleEdit(true));
-    dispatch(currentCultureValue(values));
+    // dispatch(openModal(!state.openModal));
+    // dispatch(activeButton(false));
+    // dispatch(handleEdit(true));
+    // dispatch(currentCultureValue(values));
+    setOpenModal(true)
   };
   const delateCultureCard = async (id) => {
     setisLoading(true);
@@ -97,6 +100,13 @@ const CultureCardItem = ({ props }) => {
         <Meta title={props?.cultureName} description={props?.location} />
         <Meta description={`${props.squareMeter} კვ/მ.`} />
       </Card>
+      <Modal
+      open={openModal}
+      onCancel={() => setOpenModal(false)}
+      footer={false}
+      >
+        <AntdEditCultureModal data={props} setOpenModal={setOpenModal}/>
+      </Modal>
     </>
   );
 };

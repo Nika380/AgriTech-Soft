@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { API } from "../utils/API";
 import { useGlobalContext } from "../context/global/GlobalContextProvider";
+import dayjs from "dayjs";
 
 const useFetchUpdateCulturesDetails = (id) => {
   const { state } = useGlobalContext();
@@ -16,7 +17,8 @@ const useFetchUpdateCulturesDetails = (id) => {
       const modifiedData = res.data.content.map((item) => ({
         ...item,
         taskType: item.taskType === 1 ? "შემოსავალი" : "ხარჯი",
-        plannedAt: item.plannedAt.slice(0, 10),
+        plannedFrom: dayjs(item.plannedFrom).format("YYYY-DD-MM"),
+        plannedTo: dayjs(item.plannedTo).format("YYYY-DD-MM"),
       }));
       setdataSource(modifiedData);
       console.log(modifiedData);

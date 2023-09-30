@@ -104,13 +104,14 @@ const AddForm = ({ id }) => {
   const [activeButton, setactiveButton] = useState(false);
   const [optionsValue, setOptionValue] = useState("");
   const [data, setdata] = useState("");
+  console.log(values);
   const test = [
     values.taskName,
     values.taskType,
     values.price,
-    values.plannedAt,
+    values.plannedFrom,
+    values.plannedTo,
   ];
-  console.log(values);
   useEffect(() => {
     test?.forEach((item) => {
       if (item?.length > 0) {
@@ -138,7 +139,13 @@ const AddForm = ({ id }) => {
           dispatch(handleEdit(false)), setisLoading(false);
         });
       dispatch(
-        cultureAction({ taskName: "", taskType: "", price: "", plannedAt: "" })
+        cultureAction({
+          taskName: "",
+          taskType: "",
+          price: "",
+          plannedFrom: "",
+          plannedTo: "",
+        })
       );
       dispatch(apiCallRefresh(!state.apiCallRefresh));
       dispatch(openModal(!state.openModal));
@@ -148,7 +155,13 @@ const AddForm = ({ id }) => {
         .catch((err) => console.log(err))
         .finally(() => setisLoading(false));
       dispatch(
-        cultureAction({ taskName: "", taskType: "", price: "", plannedAt: "" })
+        cultureAction({
+          taskName: "",
+          taskType: "",
+          price: "",
+          plannedFrom: "",
+          plannedTo: "",
+        })
       );
       dispatch(apiCallRefresh(!state.apiCallRefresh));
       dispatch(openModal(!state.openModal));
@@ -159,7 +172,7 @@ const AddForm = ({ id }) => {
     dispatch(cultureAction({ ...values, taskType: optionsValue }));
   }, [optionsValue]);
   useEffect(() => {
-    dispatch(cultureAction({ ...values, plannedAt: data }));
+    dispatch(cultureAction({ ...values, plannedFrom: data, plannedTo: data }));
   }, [data]);
 
   const handleChange = (e) => {
@@ -181,7 +194,7 @@ const AddForm = ({ id }) => {
               setOptionValue={setOptionValue}
             />
           ))}
-          <Space direction="vertica">
+          <Space direction="vertical">
             <div className="mb-4">
               <label
                 htmlFor="data"
@@ -189,11 +202,15 @@ const AddForm = ({ id }) => {
               >
                 თარიღი
               </label>
-              <DatePicker
+              <DatePicker.RangePicker
                 defaultValue={
-                  state.cultureAction.plannedAt
-                    ? dayjs(state.cultureAction.plannedAt, "YYYY-MM")
-                    : dayjs()
+                  state.cultureAction.plannedFrom &&
+                  state.cultureAction.plannedTo
+                    ? [
+                        dayjs(state.cultureAction.plannedFrom, "YYYY-MM"),
+                        dayjs(state.cultureAction.plannedTo, "YYYY-MM"),
+                      ]
+                    : ["", ""]
                 }
                 onChange={onChange}
                 className="backdrop-blur-lg w-full p-2 border rounded"
