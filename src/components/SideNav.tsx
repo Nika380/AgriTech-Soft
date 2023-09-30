@@ -56,16 +56,8 @@ const SideNav = ({ children }: any) => {
     },
   ];
   return (
-    <Layout
-      style={{
-        height: "100vh",
-        position: "fixed",
-        top: "0",
-        left: "0",
-        background: "white",
-      }}
-    >
-      <Sider
+    <Layout>
+      {/* <Sider
         style={{
           paddingTop: "80px",
           minHeight: "100vh",
@@ -80,9 +72,9 @@ const SideNav = ({ children }: any) => {
           mode="inline"
           items={menuItems}
         />
-      </Sider>
-      <Layout style={{ overflow: "scroll" }}>
-        <Header
+      </Sider> */}
+      <Layout>
+        {/* <Header
           style={{
             width: "100%",
             position: "fixed",
@@ -90,12 +82,15 @@ const SideNav = ({ children }: any) => {
             left: "0",
             height: "70px",
             zIndex: "100",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
           }}
         >
+          <div className="max-h-[70px] ml-[-35px] min-w-[170px]">
+            <div className="logo"></div>
+          </div>
           <div className="flex justify-between items-center">
-            <div className="top-6">
-              <div className="logo"></div>
-            </div>
             <Weather />
             <div className="absolute md:hidden block top-6 right-3 ">
               {mobileMenuOpen ? (
@@ -111,18 +106,8 @@ const SideNav = ({ children }: any) => {
               )}
             </div>
           </div>
-        </Header>
-        <Content
-          style={{
-            minHeight: "100vh",
-            width: "100vw",
-            overflowY: "scroll",
-            position: "fixed",
-            top: "70px",
-          }}
-        >
-          {children}
-        </Content>
+        </Header> */}
+        <Content>{children}</Content>
       </Layout>
     </Layout>
   );
