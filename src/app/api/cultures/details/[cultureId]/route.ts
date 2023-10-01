@@ -27,21 +27,22 @@ export async function GET(req: Request, res: any) {
 
 export async function POST(req: Request, res: any) {
   const { values } = await req.json();
-  const { id } = res.params;
+  const { cultureId } = res.params;
   try {
     await prisma.culture_details.create({
       data: {
-        culture_id: parseInt(id),
+        culture_id: parseInt(cultureId),
         task_name: values.taskName,
         task_type: parseInt(values.taskType),
-        planned_at: new Date(values.plannedAt),
-        price: values.price,
+        planned_from: new Date(values.plannedFrom),
+        planned_to: new Date(values.plannedTo),
+        price: parseInt(values.price),
         status: 3,
       },
     });
     return NextResponse.json("Created Successfully", { status: 201 });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return NextResponse.json("Something Went Wrong", { status: 400 });
   }
 }

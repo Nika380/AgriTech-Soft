@@ -28,7 +28,8 @@ export async function PUT(req: Request, res: any) {
         task_name: values.taskName,
         task_type: parseInt(values.taskType),
         price: parseInt(values.price),
-        planned_at: new Date(values.plannedAt),
+        planned_from: new Date(values.plannedFrom),
+        planned_to: new Date(values.plannedTo)
       },
     });    
     return NextResponse.json("Updated succesfully", { status: 200 });

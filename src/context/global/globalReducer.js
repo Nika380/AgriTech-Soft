@@ -4,6 +4,7 @@ import {
   CURRENTCULTUREVALUE,
   ACRTIVEFORMBTN,
   EDITISON,
+  ADDCULTUREACTION,
 } from "../actions/actions";
 
 const globalReducer = (state, actions) => {
@@ -24,6 +25,9 @@ const globalReducer = (state, actions) => {
     case EDITISON: {
       return { ...state, editCulture: payload };
     }
+    case ADDCULTUREACTION: {
+      return { ...state, cultureAction: payload };
+    }
 
     default:
       break;
@@ -39,6 +43,14 @@ const initialState = {
     cultureName: "",
     squareMeter: "",
     location: "",
+    agrocalendar: ""
+  },
+  cultureAction: {
+    taskName: "",
+    taskType: "",
+    price: "",
+    plannedFrom: "",
+    plannedTo: "",
   },
 };
 

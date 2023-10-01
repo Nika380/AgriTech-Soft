@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import { sign } from "jsonwebtoken";
 
 export async function POST(req: Request, res: any) {
-  const secret: string = process.env.NEXT_PUBLIC_JWT_SECRET || "";
+  const secret: string = process.env.JWT_SECRET_KEY || "";
   const { email, password } = await req.json();
   const user = await prisma.users.findFirst({
     where: {

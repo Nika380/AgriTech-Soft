@@ -3,14 +3,24 @@ import { prisma } from "@/prisma";
 import { setCultureDto } from "./CulturesDto";
 
 export async function POST(req: Request, res: any) {
-  const culturesList = await prisma.cultures.findMany();
+  const userEmail: any = req.headers.get("email");
+  const user = await prisma.users.findFirst({
+    where: {
+      email: userEmail,
+    },
+  });
+  console.log(userEmail);
+  const culturesList = await prisma.cultures.findMany({
+    where: {
+      created_by: user?.id,
+    },
+  });
   const content: any = [];
 
   await Promise.all(
     culturesList.map(async (culture) => {
       const res = await setCultureDto(culture);
       content.push(res);
-      console.log(culture)
     })
   );
 

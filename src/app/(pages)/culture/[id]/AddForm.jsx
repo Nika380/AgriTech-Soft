@@ -5,19 +5,29 @@ import { API } from "../../../../utils/API";
 import {
   apiCallRefresh,
   handleEdit,
-  newAction,
 } from "../../../../context/actions/actionCreators";
 import { addCultureAction } from "../../../../constants/constants";
-import { Button, Space } from "antd";
+import { Button, Space, DatePicker, Select } from "antd";
+import {
+  cultureAction,
+  openModal,
+} from "../../../../context/actions/actionCreators";
+import dayjs from "dayjs";
 
 const Form = ({
   label,
   onChange,
   errorMessage,
-  setactiveButton,
+  setOptionValue,
   ...inputProps
 }) => {
+  const { state } = useGlobalContext();
+  const LabeledValue = state.cultureAction.taskType;
   const [focused, setfocused] = useState(false);
+  const handleSelectChange = (value) => {
+    setOptionValue(value);
+  };
+
   const handleFocuse = () => {
     if (
       inputProps?.value?.length > 0 &&
@@ -26,87 +36,150 @@ const Form = ({
       setfocused(false);
     } else {
       setfocused(true);
-      setactiveButton(true);
     }
   };
   return (
-    <div className="mb-4">
-      <label className="block font-medium mb-1 text-black">{label}</label>
-      <input
-        {...inputProps}
-        onChange={onChange}
-        onBlur={handleFocuse}
-        className={`backdrop-blur-lg w-full p-2 border rounded ${
-          focused && "border-red-600"
-        }`}
-        onFocus={() =>
-          inputProps.name === "confirmPassword" && setfocused(true)
-        }
-      />
-      <span
-        className={`text-center p-1 text-red-600 text-xs ${
-          focused ? "block" : "hidden"
-        }`}
-      >
-        {errorMessage}
-      </span>
-    </div>
+    <>
+      {inputProps?.select ? (
+        <>
+          <label className="block font-medium mb-1 text-black">{label}</label>
+          <Select
+            className={`backdrop-blur-lg w-full p-2 border rounded ${
+              focused && "border-red-600"
+            }`}
+            defaultValue={`${LabeledValue}`}
+            onChange={handleSelectChange}
+            placeholder="მიუთითეთ შემოსავლის ტიპი"
+            options={[
+              {
+                label: "მიუთითეთ შემოსავლის ტიპი",
+                options: [
+                  { label: "ხარჯი", value: "2" },
+                  { label: "შემოსავალი", value: "1" },
+                ],
+              },
+            ]}
+            style={{ height: 50, marginBottom: "16px" }}
+          />
+          <span
+            className={`text-center p-1 text-red-600 text-xs ${
+              focused ? "block" : "hidden"
+            }`}
+          >
+            {errorMessage}
+          </span>
+        </>
+      ) : (
+        <div className="mb-4">
+          <label className="block font-medium mb-1 text-black">{label}</label>
+          <input
+            {...inputProps}
+            onChange={onChange}
+            onBlur={handleFocuse}
+            className={`backdrop-blur-lg w-full p-2 border rounded ${
+              focused && "border-red-600"
+            }`}
+            onFocus={() =>
+              inputProps.name === "confirmPassword" && setfocused(true)
+            }
+          />
+          <span
+            className={`text-center p-1 text-red-600 text-xs ${
+              focused ? "block" : "hidden"
+            }`}
+          >
+            {errorMessage}
+          </span>
+        </div>
+      )}
+    </>
   );
 };
 
-const AddForm = ({ setopenModal }) => {
+const AddForm = ({ id }) => {
   const { state, dispatch } = useGlobalContext();
-  const values = state.action;
-  const test = [
-    state.action.name,
-    state.action.money,
-    state.action.mainBusiness,
-  ];
+  const values = state.cultureAction;
   const [isLoading, setisLoading] = useState(false);
   const [ValueCheck, setValueCheck] = useState(false);
   const [activeButton, setactiveButton] = useState(false);
+  const [optionsValue, setOptionValue] = useState("");
+  const [data, setdata] = useState("");
+  console.log(values);
+  const test = [
+    values.taskName,
+    values.taskType,
+    values.price,
+    values.plannedFrom,
+    values.plannedTo,
+  ];
   useEffect(() => {
-    test.forEach((item) => {
-      if (item.length > 0) {
+    test?.forEach((item) => {
+      if (item?.length > 0) {
         setValueCheck(true);
       } else {
         setValueCheck(false);
       }
-      if (ValueCheck) {
-        setactiveButton(false);
-      } else {
+      if (ValueCheck && optionsValue !== "0" && data) {
         setactiveButton(true);
+      } else {
+        setactiveButton(false);
       }
     });
-  }, [values, ValueCheck]);
+  }, [values, ValueCheck, optionsValue]);
 
   const addActionHandler = async (e) => {
     e.preventDefault();
     setisLoading(true);
     setactiveButton(true);
-    if (state.editCulture) {
-      await API.put(`//${values.id}`, { values })
+    if (values.id) {
+      await API.put(`/cultures/details/${id}/${values.id}`, { values })
         .then((res) => console.log(res))
         .catch((err) => console.log(err))
         .finally(() => {
           dispatch(handleEdit(false)), setisLoading(false);
         });
-      dispatch(newAction({ name: "", money: "", mainBusiness: "" }));
+      dispatch(
+        cultureAction({
+          taskName: "",
+          taskType: "",
+          price: "",
+          plannedFrom: "",
+          plannedTo: "",
+        })
+      );
       dispatch(apiCallRefresh(!state.apiCallRefresh));
-      setopenModal(false);
+      dispatch(openModal(!state.openModal));
     } else {
-      await API.post(`//`, { values })
+      await API.post(`/cultures/details/${id}`, { values })
         .then((res) => console.log(res))
         .catch((err) => console.log(err))
         .finally(() => setisLoading(false));
-      dispatch(newAction({ name: "", money: "", mainBusiness: "" }));
+      dispatch(
+        cultureAction({
+          taskName: "",
+          taskType: "",
+          price: "",
+          plannedFrom: "",
+          plannedTo: "",
+        })
+      );
       dispatch(apiCallRefresh(!state.apiCallRefresh));
-      setopenModal(false);
+      dispatch(openModal(!state.openModal));
     }
   };
 
+  useEffect(() => {
+    dispatch(cultureAction({ ...values, taskType: optionsValue }));
+  }, [optionsValue]);
+  useEffect(() => {
+    dispatch(cultureAction({ ...values, plannedFrom: data, plannedTo: data }));
+  }, [data]);
+
   const handleChange = (e) => {
-    dispatch(newAction({ ...values, [e.target.name]: e.target.value }));
+    dispatch(cultureAction({ ...values, [e.target.name]: e.target.value }));
+  };
+  const onChange = (data, dateString) => {
+    setdata(dateString);
   };
   return (
     <div className="flex items-center justify-center mt-10">
@@ -114,22 +187,48 @@ const AddForm = ({ setopenModal }) => {
         <form>
           {addCultureAction.map((input) => (
             <Form
-              key={input.key}
+              key={input.id}
               {...input}
               value={values[input.name]}
               onChange={handleChange}
-              setactiveButton={() => setactiveButton()}
+              setOptionValue={setOptionValue}
             />
           ))}
+          <Space direction="vertical">
+            <div className="mb-4">
+              <label
+                htmlFor="data"
+                className="block font-medium mb-1 text-black"
+              >
+                თარიღი
+              </label>
+              <DatePicker.RangePicker
+                defaultValue={
+                  state.cultureAction.plannedFrom &&
+                  state.cultureAction.plannedTo
+                    ? [
+                        dayjs(state.cultureAction.plannedFrom, "YYYY-MM"),
+                        dayjs(state.cultureAction.plannedTo, "YYYY-MM"),
+                      ]
+                    : ["", ""]
+                }
+                onChange={onChange}
+                className="backdrop-blur-lg w-full p-2 border rounded"
+              />
+            </div>
+          </Space>
           <Space wrap className="flex flex-row justify-between">
-            <Button danger onClick={() => setopenModal((prev) => !prev)}>
+            <Button
+              danger
+              onClick={() => dispatch(openModal(!state.openModal))}
+            >
               გამოსვლა
             </Button>
             <Button
               type="primary"
               ghost
               onClick={addActionHandler}
-              disabled={activeButton}
+              disabled={!activeButton}
             >
               {isLoading ? <div className="custom-loader" /> : "დამატება"}
             </Button>

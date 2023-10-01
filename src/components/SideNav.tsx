@@ -1,5 +1,5 @@
 "use client";
-import { Breadcrumb, ConfigProvider, Layout, Menu } from "antd";
+import { Breadcrumb, Button, ConfigProvider, Layout, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import Link from "next/link";
@@ -10,40 +10,31 @@ import { HiOutlineMenu, HiHome } from "react-icons/hi";
 import { PiPlantBold } from "react-icons/pi";
 import { BiSolidAnalyse } from "react-icons/bi";
 import { MdOutlineRecommend } from "react-icons/md";
-// import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-// import EqualizerIcon from "@mui/icons-material/Equalizer";
-// import HandshakeIcon from "@mui/icons-material/Handshake";
 import "../assets/styles/globals.scss";
-// import { useSelector } from "react-redux";
-// import { RootState } from "@/redux/store";
-// import LogoutMenu from "./LogoutMenu";
-// import { Button } from "@mui/material";
-// import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-// import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
-
-import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
 import Weather from "./Weather";
+import { API } from "@/utils/API";
+import { LogoutOutlined } from "@ant-design/icons";
 
 const SideNav = ({ children }: any) => {
   const [mobileMenuOpen, setmobileMenuOpen] = useState(false);
   const pathname = usePathname().split("/")[1];
   const router = useRouter();
+  const logoutFunc = async () => {
+    await API.get("/auth/logout").then(() => {
+      localStorage.setItem("auth", "0");
+      router.push("/login");
+    });
+  };
   const menuItems = [
-    {
-      label: "მთავარი",
-      key: "home",
-      icon: (
-        <Link href={"/home"}>
-          <HiHome />
-        </Link>
-      ),
-    },
+    // {
+    //   label: "მთავარი",
+    //   key: "home",
+    //   icon: (
+    //     <Link href={"/home"}>
+    //       <HiHome />
+    //     </Link>
+    //   ),
+    // },
     {
       label: "კულტურები",
       key: "culture",
@@ -97,6 +88,19 @@ const SideNav = ({ children }: any) => {
           mode="inline"
           items={menuItems}
         />
+        <Button
+          onClick={() => logoutFunc()}
+          style={{
+            borderRadius: "200px",
+            height: "50px",
+            width: "50px",
+            marginLeft: "10px",
+            marginTop: "60vh",
+            color: "blue",
+            borderColor: "blue",
+          }}
+          icon={<LogoutOutlined />}
+        ></Button>
       </Sider>
       <Layout style={{ overflow: "scroll" }}>
         <Header
@@ -110,9 +114,10 @@ const SideNav = ({ children }: any) => {
           }}
         >
           <div className="flex justify-between items-center">
-            <div className="top-6">
-              <h1 className="h-12 text-white">Logo Name</h1>
+            <div className="max-h-[70px] ml-[-35px] min-w-[170px]">
+              <div className="logo"></div>
             </div>
+
             <Weather />
             <div className="absolute md:hidden block top-6 right-3 ">
               {mobileMenuOpen ? (
