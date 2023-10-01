@@ -11,7 +11,6 @@ export async function POST(req: Request, res: any) {
   values = JSON.parse(
     await Translate(JSON.stringify(values), { from: "ka", to: "en" })
   );
-  console.log(values);
   try {
     const gptResponse: any = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",

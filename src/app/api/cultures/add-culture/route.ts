@@ -5,21 +5,26 @@ import setAgrocalendarDto from "../../agrocalendar/AgrocalendarDto";
 
 export async function POST(req: Request, res: any) {
   const { values } = await req.json();
+  const userEmail: any = req.headers.get("email");
+  const user = await prisma.users.findFirst({
+    where: {
+      email: userEmail,
+    },
+  });
   try {
     const response = await prisma.cultures.create({
       data: {
         culture_name: values.cultureName,
         culture_location: values.location,
         square_meter: parseInt(values.squareMeter),
+        created_by: user?.id,
       },
     });
     const createCultureDetails = async (taskName: any, data: any) => {
       const year = dayjs().year();
-      console.log(data)
       let formattedPlannedFrom = dayjs(`${year}-${data.plannedFrom}`).format(
         "YYYY-DD-MM"
       );
-      console.log(`${year}-${data.plannedFrom}`)
       let formattedPlannedTo = dayjs(`${year}-${data.plannedTo}`).format(
         "YYYY-DD-MM"
       );
@@ -51,10 +56,16 @@ export async function POST(req: Request, res: any) {
         createCultureDetails("გასხვლა", agroCalendar.gasxvlaDates);
       }
       if (agroCalendar.daavadebebiDates) {
-        createCultureDetails("დაავადებებთან ბრძოლა", agroCalendar.daavadebebiDates);
+        createCultureDetails(
+          "დაავადებებთან ბრძოლა",
+          agroCalendar.daavadebebiDates
+        );
       }
       if (agroCalendar.damushavebaDates) {
-        createCultureDetails("ნათესების დამუშავება", agroCalendar.damushavebaDates);
+        createCultureDetails(
+          "ნათესების დამუშავება",
+          agroCalendar.damushavebaDates
+        );
       }
       if (agroCalendar.morwkvaDates) {
         createCultureDetails("მორწყვა", agroCalendar.morwkvaDates);

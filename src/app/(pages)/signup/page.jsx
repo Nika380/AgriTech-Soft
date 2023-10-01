@@ -2,34 +2,36 @@
 import React, { useState } from "react";
 import Form from "../../../components/Form_Sign_Up";
 import { inputs2 } from "../../../constants/constants";
+import { API } from "@/utils/API";
+import { notification } from "antd";
+import { useRouter } from "next/navigation";
 
-const Page = () => {
+const SignUp = () => {
   //   const navigate = useNavigate();
   const [user, setUser] = useState({
     userName: "",
     password: "",
     email: "",
   });
+  const router = useRouter()
   const [error, seterror] = useState("");
   const [loading, setloading] = useState(false);
-  const signUpHandler = (e) => {
+  const signUpHandler = async (e) => {
     e.preventDefault();
     setloading(true);
-
-    signUp(user)
-      .then(() => {
-        // navigate(SIGN_IN);
+    await API.post("/auth/register", user)
+    .then(res => {
+      notification["success"]({
+        message: "აქაუნთის შექმნა",
+        description: "აქაუნთი შეიქმნა წარმატებით"
       })
-      .catch((error) => {
-        if (JSON.stringify(error.message).includes("E11000")) {
-          seterror("This user is already exists");
-        } else {
-          seterror(error.message);
-        }
+      router.push("/login")
+    }).catch(error => {
+      notification["success"]({
+        message: "აქაუნთის შექმნა",
+        description: "დაფიქსირდა შეცდომა"
       })
-      .finally(() => {
-        setloading(false);
-      });
+    })
   };
 
   const handleChange = (e) => {
@@ -82,4 +84,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default SignUp;

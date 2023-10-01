@@ -3,17 +3,10 @@ import { prisma } from "@/prisma";
 import bcrypt from "bcrypt";
 
 export async function POST(req: Request) {
-  const { email, password, phone } = await req.json();
+  const { email, password, userName } = await req.json();
   const checkUser = await prisma.users.findFirst({
     where: {
-      OR: [
-        {
-          email: email,
-        },
-        {
-          phone: phone,
-        },
-      ],
+      email: email,
     },
   });
   if (checkUser) {
@@ -27,7 +20,7 @@ export async function POST(req: Request) {
       data: {
         email: email,
         password: hashedPass,
-        phone: phone,
+        first_name: userName
       },
     });
     return NextResponse.json("Account Created", { status: 201 });

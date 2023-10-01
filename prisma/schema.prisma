@@ -23,7 +23,6 @@ model users {
   id         Int      @id(map: "users_pk") @default(autoincrement())
   first_name String?
   last_name  String?
-  phone      String
   email      String
   password   String
   created_at DateTime @default(now()) @db.Timestamp(6)

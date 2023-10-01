@@ -13,7 +13,6 @@ const AntdForm = ({ id }) => {
     setLoading(true);
     values.plannedFrom = dayjs(values.plannedTime[0]).format("YYYY-MM-DD");
     values.plannedTo = dayjs(values.plannedTime[1]).format("YYYY-MM-DD");
-    console.log(values);
     await API.post(`/cultures/details/${id}`, { values });
 
     form.resetFields();

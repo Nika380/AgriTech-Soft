@@ -24,8 +24,6 @@ const Recomendation = () => {
   const [recomendationText, setRecomendationText] = useState("");
 
   const onFinish = async (values) => {
-    console.log(values);
-    console.log(endpoints[selection - 1]);
     setLoading(true);
     try {
       await API.post(`/recomendation/${endpoints[selection - 1]}`, { values }).then(

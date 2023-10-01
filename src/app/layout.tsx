@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import Index from "./page";
 import ContextProvider from "../context/global/GlobalContextProvider";
+import Index from "./page";
 
 const RootLayout = ({ children }: any) => {
   return (

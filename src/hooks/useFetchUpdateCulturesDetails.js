@@ -21,7 +21,6 @@ const useFetchUpdateCulturesDetails = (id) => {
         plannedTo: dayjs(item.plannedTo).format("YYYY-DD-MM"),
       }));
       setdataSource(modifiedData);
-      console.log(modifiedData);
     } catch (err) {
       setError(err.message);
     } finally {

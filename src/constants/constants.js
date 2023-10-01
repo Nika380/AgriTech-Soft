@@ -112,3 +112,27 @@ export const inputs2 = [
     required: true,
   },
 ];
+export const inputs3 = [
+  {
+    id: 2,
+    name: "email",
+    type: "email",
+    placeholder: "Email",
+    errorMessage:
+      "It should be a valid email addres and should matched gmail.com!",
+    label: "Email",
+    pattern: "[a-zA-Z0-9._+-]+[a-zA-Z0-9]+@gmail.com",
+    required: true,
+  },
+  {
+    id: 3,
+    name: "password",
+    type: "password",
+    placeholder: "Password",
+    errorMessage:
+      "Password should be 8-20 characters and include at least 1 leter,  1 number and 1 special character! ",
+    label: "Password",
+    pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`,
+    required: true,
+  },
+];

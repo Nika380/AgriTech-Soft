@@ -6,7 +6,6 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 
 const AntdForm = ({ cultureId, detailId, record }) => {
-  console.log(record);
   const { state, dispatch } = useGlobalContext();
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();

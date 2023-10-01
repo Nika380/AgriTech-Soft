@@ -99,6 +99,9 @@ const CultureCardItem = ({ props }) => {
       >
         <Meta title={props?.cultureName} description={props?.location} />
         <Meta description={`${props.squareMeter} კვ/მ.`} />
+        <Meta description={`${props.income / props.squareMeter} ლარი მოგება 1 კვ.მ-ზე.`} />
+        <Meta description={`${props.expense / props.squareMeter} ლარი ხარჯი 1 კვ.მ-ზე.`} />
+
       </Card>
       <Modal
       open={openModal}
