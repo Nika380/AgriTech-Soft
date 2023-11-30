@@ -1,34 +1,34 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Welcome to Mouravi: Revolutionizing Farm Management 🚜✨
+## Overview
+Mouravi is not just another agri-tech solution; it's a comprehensive suite of tools meticulously crafted to transform farm management. Developed in collaboration with the talented frontend wizard, Tato Jakhua, Mouravi goes beyond the ordinary, combining cutting-edge technologies to empower farmers with unprecedented insights and efficiency.
 
-## Getting Started
+# Key Features
+## 1. Smart Farm Planning
+Task Organization: Seamlessly organize upcoming tasks with intuitive features.
+Expense Tracking: Effortlessly manage expenses and track income for different crops.
+## 2. Precision Agriculture
+Per-Square-Meter Analysis: Gain a detailed insight into costs and profits for optimal decision-making.
+Weather Forecast Tool: Plan tasks efficiently with an integrated weather forecast tool.
+## 3. AI-Powered Insights
+Disease Classification: Leverage AI capabilities to identify and classify plant diseases.
+Crop Recommendations: Receive personalized crop recommendations based on lab reports.
+Fertilization Strategies: Implement AI-driven fertilization strategies tailored to specific crops.
+## 4. Agrocalendar Integration
+Automated Planning: The built-in agrocalendar generates tasks and timelines for each crop, simplifying the planning process.
+Technology Stack
+Mouravi is built on a robust foundation, incorporating the following technologies:
 
-First, run the development server:
+## Frontend: Ant Design, TypeScript, Next.js
+## Backend: NextJS Api Router, TensorFlow, Python, PostgreSQL, Prisma ORM
+# External Image Classification API
+To enhance the AI capabilities, Mouravi relies on an external image classification API for plant disease identification. The Python code for this functionality is hosted separately and should be integrated into the system for seamless operation.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+# Configuration
+To get Mouravi up and running smoothly, make sure to include the following environment variables in your .env file:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+NEXT_PUBLIC_API_KEY  // this is API Key to get Weather Data, I used Weatherbit.io API
+NEXT_PUBLIC_DOMAIN_URL=
+NEXT_PUBLIC_JWT_SECRET=
+OPENAI_API_KEY
+JWT_SECRET_KEY
+DATABASE_URL
